@@ -11,17 +11,33 @@ export const ruleName = "file-progress/activate";
 const controllerKey = Symbol.for(
     "stylelint-plugin-file-progress.controller.v1"
 );
+const validationKey = Symbol.for(
+    "stylelint-plugin-file-progress.validation.v1"
+);
 // Both module formats share a lazy controller in this process.
 const controllerRegistry = safeCastTo<
     typeof globalThis & {
         [controllerKey]?: ProgressController;
+        [validationKey]?: WeakSet<object>;
     }
 >(globalThis);
 
 /** Report progress using Stylelint's documented per-root rule callback. */
 export const ruleFunction: stylelint.Rule =
-    (primary, secondary: Readonly<ProgressSettings> | undefined) =>
+    (
+        primary,
+        secondary:
+            | null
+            | Readonly<ProgressSettings>
+            | undefined
+    ) =>
     (root, result) => {
+        // A multi-root document shares one result, including option diagnostics.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- The global validation set is absent until the first rule invocation.
+        controllerRegistry[validationKey] ??= new WeakSet<object>();
+        const validated = controllerRegistry[validationKey];
+        if (validated.has(result)) return;
+        validated.add(result);
         if (
             !stylelint.utils.validateOptions(
                 result,
@@ -41,7 +57,7 @@ export const ruleFunction: stylelint.Rule =
         controller.observe(
             result,
             filename.length > 0 ? filename : "<input>",
-            normalizeSettings(secondary)
+            normalizeSettings(secondary ?? undefined)
         );
     };
 ruleFunction.ruleName = ruleName;

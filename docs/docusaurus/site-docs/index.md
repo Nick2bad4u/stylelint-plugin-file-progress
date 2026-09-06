@@ -7,11 +7,13 @@ sidebar_position: 1
 
 Stylelint File Progress shows files as they reach Stylelint's rule phase. Keep a readable trail of filenames, switch to compact activity, or show just a process summary.
 
-![Example terminal output](../static/img/terminal.svg)
+![Colored terminal output](../static/demos/presets/recommended-detailed.gif)
 
 ## Get started
 
-The initial npm release is being prepared. Until publication, install a tarball built from the repository with `npm pack`.
+```sh
+npm install --save-dev stylelint stylelint-plugin-file-progress
+```
 
 ```js
 export default {
@@ -23,6 +25,7 @@ Keep your existing shared config before the progress preset in `extends`. Your l
 
 ## Pick your display
 
+- [Watch the colored demos](./demos.md): all presets, options, and spinner styles.
 - [Configure the rule](./activate.md): filenames, streams, marks, spinner frames, and throttling.
 - [Choose a preset](./presets.md): seven configurations matching the ESLint progress package.
 - [Understand the metrics](./compatibility.md): process summaries, cached files, and custom syntax.

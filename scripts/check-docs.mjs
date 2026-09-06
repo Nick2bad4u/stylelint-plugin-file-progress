@@ -1,5 +1,6 @@
 import { access, readFile } from "node:fs/promises";
 import { configNames } from "../dist/plugin.js";
+import { optionDemos } from "./demo-cases.mjs";
 
 const root = "docs/docusaurus/build/";
 for (const route of [
@@ -7,11 +8,22 @@ for (const route of [
     "activate.html",
     "presets.html",
     "compatibility.html",
+    "demos.html",
     ...configNames.map((name) => `presets/${name}.html`),
     "eslint-inspector/index.html",
     "stylelint-inspector/index.html",
 ]) {
     await access(root + route);
+}
+const demos = await readFile(root + "demos.html", "utf8");
+for (const { name, group } of [
+    ...configNames.map((name) => ({ name, group: "presets" })),
+    ...optionDemos.map(({ name }) => ({ name, group: "options" })),
+]) {
+    // Markdown image imports receive hashed URLs from webpack.
+    if (!demos.includes(`alt="${name} terminal recording"`))
+        throw new Error(`Demo page is missing ${name}`);
+    await access(root + `demos/${group}/${name}.gif`);
 }
 const homepage = await readFile(root + "index.html", "utf8");
 if (

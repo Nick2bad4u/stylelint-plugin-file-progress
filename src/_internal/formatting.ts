@@ -66,6 +66,7 @@ export function formatSummary(
 
 /** Render Windows and POSIX paths consistently, including cross-platform tests. */
 export function relativePath(filename: string, cwd: string): string {
+    if (!cwd) return filename;
     const paths = pathImplementation(filename);
     if (!paths.isAbsolute(filename)) return filename;
     return paths.relative(cwd, filename) || paths.basename(filename);

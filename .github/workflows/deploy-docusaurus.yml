@@ -7,7 +7,8 @@ permissions:
     contents: "read"
 concurrency:
     group: "pages"
-    cancel-in-progress: true
+    # Finish validated production deployments before starting the next one.
+    cancel-in-progress: "${{ false }}"
 jobs:
     build:
         name: "Build"
@@ -41,7 +42,7 @@ jobs:
                   node-version-file: ".node-version"
                   cache: "npm"
             - run: "npm ci"
-              name: "Run npm install --global --ignore-scripts npm@12.0.2 && npm ci"
+              name: "Install locked dependencies"
               shell: "bash"
               timeout-minutes: 40
             - run: "npm run docs:build && npm run docs:check-links"

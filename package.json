@@ -1,7 +1,7 @@
 {
     "$schema": "https://www.schemastore.org/package.json",
     "name": "stylelint-plugin-file-progress",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "private": false,
     "description": "Live per-file progress and process summaries for Stylelint",
     "keywords": [
@@ -113,11 +113,11 @@
     },
     "main": "./dist/plugin.cjs",
     "module": "./dist/plugin.js",
-    "types": "./dist/plugin.d.ts",
+    "types": "./dist/plugin.d.cts",
     "typesVersions": {
         "*": {
             "configs/*": [
-                "dist/configs/*.d.ts"
+                "dist/configs/*.d.cts"
             ]
         }
     },
@@ -139,8 +139,11 @@
         "coverage": "npm run test:coverage",
         "docs:api": "npm run docs:api --workspace docs/docusaurus",
         "docs:build": "npm run build && npm run docs:build --workspace docs/docusaurus",
+        "docs:check-api": "node scripts/check-api.mjs",
         "docs:check-links": "node scripts/check-docs.mjs",
+        "predocs:demos:check": "npm run build",
         "docs:demos:check": "node scripts/demos.mjs --check",
+        "predocs:demos:write": "npm run build",
         "docs:demos:write": "node scripts/demos.mjs",
         "docs:serve": "npm run serve --workspace docs/docusaurus",
         "docs:start": "npm run start --workspace docs/docusaurus",
@@ -166,10 +169,14 @@
         "prepack": "npm run build",
         "prepublishOnly": "npm run release:verify",
         "release:check": "npm run release:verify",
-        "release:verify": "npm run build && npm run typecheck && npm run lint:all && npm run test:coverage && npm run sync:rules:check && npm run docs:demos:check && npm run docs:typecheck && npm run docs:build && npm run docs:check-links && npm run lint:package-check && npm run test:compat",
+        "release:verify": "npm run build && npm run typecheck && npm run lint:all && npm run test:coverage && npm run test:docs-images && npm run sync:rules:check && npm run docs:demos:check && npm run docs:typecheck && npm run docs:build && npm run docs:check-links && npm run lint:package-check && npm run test:compat",
+        "presync:configs-rules-matrix": "npm run build",
         "sync:configs-rules-matrix": "node scripts/sync.mjs",
+        "presync:readme-rules-table": "npm run build",
         "sync:readme-rules-table": "node scripts/sync.mjs",
+        "presync:rules:check": "npm run build",
         "sync:rules:check": "node scripts/sync.mjs",
+        "presync:rules:write": "npm run build",
         "sync:rules:write": "node scripts/sync.mjs --write",
         "pretest": "npm run build",
         "test": "vitest run",
@@ -181,10 +188,14 @@
         "test:coverage": "vitest run --coverage",
         "pretest:coverage:ci": "npm run build",
         "test:coverage:ci": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=test-report.junit.xml",
+        "test:docs-images": "node scripts/check-docs-images.mjs",
         "typecheck": "tsc --noEmit -p tsconfig.json",
         "update:dependencies": "ncu --configFilePath node_modules/ncu-config-nick2bad4u --configFileName .ncurc.json"
     },
     "overrides": {
+        "@docusaurus/mdx-loader": {
+            "image-size": "npm:image-size-next@2.1.1"
+        },
         "qs": "^6.16.0",
         "serialize-javascript": "^7.1.1",
         "sockjs": {

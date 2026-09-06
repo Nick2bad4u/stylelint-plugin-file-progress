@@ -8,4 +8,6 @@ export default {
 };
 ```
 
+![recommended-summary-only colored terminal demonstration](../../static/demos/presets/recommended-summary-only.gif)
+
 See [all options](../activate.md) and [compatibility](../compatibility.md) for summary and terminal behavior.

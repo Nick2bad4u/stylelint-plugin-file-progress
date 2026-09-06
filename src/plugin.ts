@@ -6,15 +6,21 @@ import activate, { ruleFunction } from "./rules/activate.js";
 
 /** Package identity. Kept in sync with package.json by sync:rules:check. */
 export const meta = {
+    /** Published npm package name. */
     name: "stylelint-plugin-file-progress",
+    /** Namespace used by the file-progress/activate rule. */
     namespace: "file-progress",
-    version: "0.1.0",
+    /** Version of this plugin build, matching package.json. */
+    version: "1.0.0",
 } as const;
 /** Static package identity exposed on the plugin pack. */
 export type FileProgressMetadata = typeof meta;
 
 /** Rule registry keyed by unqualified rule name. */
-export const rules: { readonly activate: Rule } = { activate: ruleFunction };
+export const rules: {
+    /** Observes file-processing events without adding lint findings. */
+    readonly activate: Rule;
+} = { activate: ruleFunction };
 /** Available configuration subpaths. */
 export const configNames = [
     "recommended",
@@ -66,8 +72,11 @@ export const configs: Record<FileProgressConfigName, FileProgressConfig> = {
 
 /** Stylelint plugin pack with discoverable metadata, rules, and presets. */
 export type FileProgressPlugin = Plugin[] & {
+    /** Seven shareable presets, keyed by their public configuration names. */
     readonly configs: typeof configs;
+    /** Package name, rule namespace, and build version. */
     readonly meta: typeof meta;
+    /** Native Stylelint rules keyed by unqualified rule name. */
     readonly rules: typeof rules;
 };
 

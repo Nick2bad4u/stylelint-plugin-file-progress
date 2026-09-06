@@ -8,4 +8,6 @@ export default {
 };
 ```
 
+![recommended-tty colored terminal demonstration](../../static/demos/presets/recommended-tty.gif)
+
 See [all options](../activate.md) and [compatibility](../compatibility.md) for summary and terminal behavior.

@@ -2,15 +2,19 @@
 
 Live filenames and configurable process summaries for Stylelint.
 
-[![CI](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/actions/workflows/ci.yml/badge.svg)](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/actions/workflows/ci.yml)
+[![Project type: Stylelint%20plugin.](https://flat.badgen.net/static/type/Stylelint%20plugin/A21CAF)](https://github.com/Nick2bad4u/stylelint-plugin-file-progress) [![Latest npm version.](https://flat.badgen.net/npm/v/stylelint-plugin-file-progress?color=0E7490)](https://www.npmjs.com/package/stylelint-plugin-file-progress) [![Monthly npm downloads.](https://flat.badgen.net/npm/dm/stylelint-plugin-file-progress?color=BE185D)](https://www.npmjs.com/package/stylelint-plugin-file-progress) [![Supported Node.js versions.](https://flat.badgen.net/npm/node/stylelint-plugin-file-progress?color=4D7C0F)](https://www.npmjs.com/package/stylelint-plugin-file-progress) [![TypeScript declaration status.](https://flat.badgen.net/npm/types/stylelint-plugin-file-progress?color=6D28D9)](https://www.npmjs.com/package/stylelint-plugin-file-progress) [![Codecov coverage.](https://flat.badgen.net/codecov/github/Nick2bad4u/stylelint-plugin-file-progress/main)](https://codecov.io/gh/Nick2bad4u/stylelint-plugin-file-progress/branch/main) [![GitHub Actions checks on main.](https://flat.badgen.net/github/checks/Nick2bad4u/stylelint-plugin-file-progress/main)](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/actions) [![NPM license.](https://flat.badgen.net/npm/license/stylelint-plugin-file-progress?color=4338CA)](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/blob/main/LICENSE)
 
-[Documentation](https://nick2bad4u.github.io/stylelint-plugin-file-progress/) · [CI](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/actions/workflows/ci.yml)
+![Colored per-file progress](https://raw.githubusercontent.com/Nick2bad4u/stylelint-plugin-file-progress/main/docs/docusaurus/static/demos/presets/recommended.gif)
 
-![Terminal progress demo](docs/docusaurus/static/img/terminal.svg)
+![Detailed process summary](https://raw.githubusercontent.com/Nick2bad4u/stylelint-plugin-file-progress/main/docs/docusaurus/static/demos/presets/recommended-detailed.gif)
+
+[Documentation](https://nick2bad4u.github.io/stylelint-plugin-file-progress/) · [All preset and option demos](https://nick2bad4u.github.io/stylelint-plugin-file-progress/demos)
 
 ## Quick start
 
-The initial npm release is being prepared. Build and install a repository tarball with `npm pack` until publication.
+```sh
+npm install --save-dev stylelint stylelint-plugin-file-progress
+```
 
 ```js
 export default {

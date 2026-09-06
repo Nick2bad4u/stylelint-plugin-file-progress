@@ -59,7 +59,7 @@ try {
     const tarball = path.join(workspace, packedItem.filename);
     const requested = process.argv
         .find((arg) => arg.startsWith("--stylelint="))
-        ?.slice(11);
+        ?.slice(12);
     const versions = requested
         ? [requested]
         : [
@@ -126,7 +126,7 @@ const metadata: FileProgressMetadata = pack.meta;
 const invalid: ProgressSettings = {mode: 'invalid'};
 // @ts-expect-error Unknown presets must remain a type error.
 const missing: FileProgressConfigName = 'missing';
-void [options, metadata, pack.configs[name], invalid, missing, ${presetNames.map((_, i) => "preset" + i).join(",")}];\n`;
+void [options, metadata, pack.configs[name], invalid, missing, ${presetNames.map((_, i) => "preset" + i + ".rules").join(",")}];\n`;
             await writeFile(path.join(consumer, `types.${kind}`), code);
         }
         const types = spawnSync(
@@ -148,8 +148,43 @@ void [options, metadata, pack.configs[name], invalid, missing, ${presetNames.map
             throw new Error(
                 `Consumer declarations (Stylelint ${version}): ${types.stdout || types.stderr}`
             );
+        const installedStylelint = JSON.parse(
+            await readFile(
+                path.join(consumer, "node_modules/stylelint/package.json"),
+                "utf8"
+            )
+        ).version;
+        // Stylelint 17 exposes types only through package exports, requiring modern resolution.
+        if (installedStylelint.startsWith("16.")) {
+            const legacy = spawnSync(
+                process.execPath,
+                [
+                    path.join(root, "node_modules/typescript/bin/tsc"),
+                    "--noEmit",
+                    "--strict",
+                    "--module",
+                    "commonjs",
+                    "--moduleResolution",
+                    "node10",
+                    "--ignoreDeprecations",
+                    "6.0",
+                    "--target",
+                    "es2022",
+                    "types.cts",
+                ],
+                { cwd: consumer, encoding: "utf8", timeout: 30000 }
+            );
+            if (legacy.status !== 0)
+                throw new Error(
+                    `Legacy CommonJS declarations (Stylelint ${version}): ${legacy.stdout || legacy.stderr}`
+                );
+
+            console.log(
+                `Verified legacy CommonJS consumer declarations with Stylelint ${installedStylelint}`
+            );
+        }
         console.log(
-            `Verified ESM and CommonJS consumer declarations with Stylelint ${version}`
+            `Verified ESM and CommonJS consumer declarations with Stylelint ${installedStylelint}`
         );
         const result = spawnSync(process.execPath, ["verify.mjs"], {
             cwd: consumer,

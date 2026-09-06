@@ -25,3 +25,7 @@ The last valid file options determine the summary settings. The process exit cod
 ## Node and module formats
 
 The Node 22.0.0 minimum is verified with Stylelint 16 in both ESM and CommonJS. Stylelint 17 is ESM-only: CommonJS consumers need Node 22.12.0 or later (or another Node version with synchronous ESM loading). The development toolchain uses the stricter engines declared in `devEngines`.
+
+Worker threads keep independent progress state and emit their own shutdown summaries. When workers capture stdout or stderr, progress uses that captured stream. If a watched working directory disappears, filenames are displayed as supplied.
+
+TypeScript consumers should use `node16`, `nodenext`, or `bundler` module resolution with Stylelint 17, whose types are exposed through package exports. Legacy `node10` resolution is additionally tested with Stylelint 16 and the CommonJS entrypoints.

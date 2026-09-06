@@ -1,5 +1,6 @@
 import { writeSync } from "node:fs";
 import { performance } from "node:perf_hooks";
+import { isMainThread } from "node:worker_threads";
 import pc from "picocolors";
 import { isFinite } from "ts-extras";
 
@@ -47,6 +48,12 @@ const frames: Record<SpinnerStyle, readonly string[]> = {
         "🕒",
         "🕓",
         "🕔",
+        "🕕",
+        "🕖",
+        "🕗",
+        "🕘",
+        "🕙",
+        "🕚",
     ],
     dots: [
         "⠋",
@@ -165,10 +172,44 @@ export class ProgressController {
     }
 }
 
-/** Real process boundary. Synchronous final writes cannot be lost on exit. */
+const workerWrites: Record<OutputStream, number> = { stderr: 0, stdout: 0 };
+const onWorkerOutputError = (): void => {
+    /* Output is best effort. */
+};
+
+/** Keep one temporary error listener even when a worker buffers many files. */
+function writeWorkerOutput(stream: OutputStream, text: string): void {
+    const output = process[stream];
+    if (workerWrites[stream] === 0) output.on("error", onWorkerOutputError);
+    workerWrites[stream] += 1;
+    const complete = (): void => {
+        workerWrites[stream] -= 1;
+        if (workerWrites[stream] === 0)
+            output.removeListener("error", onWorkerOutputError);
+    };
+    try {
+        output.write(text, () => {
+            queueMicrotask(complete);
+        });
+    } catch {
+        complete();
+    }
+}
+
+/**
+ * Real process boundary with descriptor writes on the main thread and
+ * worker-aware streams.
+ */
 export const processHost: ProgressHost = {
     color: (stream) => pc.isColorSupported && Boolean(process[stream].isTTY),
-    cwd: () => process.cwd(),
+    cwd: () => {
+        try {
+            return process.cwd();
+        } catch {
+            // A watched directory can disappear while an API process stays alive.
+            return "";
+        }
+    },
     isTTY: (stream) => Boolean(process[stream].isTTY),
     now: () => performance.now(),
     onExit: (callback) => {
@@ -177,6 +218,11 @@ export const processHost: ProgressHost = {
     write: (stream, text) => {
         // Progress must not crash linting when a downstream pipe closes.
 
+        if (!isMainThread) {
+            // Worker streams use message ports; numeric descriptors bypass captured output.
+            writeWorkerOutput(stream, text);
+            return;
+        }
         try {
             // eslint-disable-next-line n/no-sync -- Exit handlers cannot await asynchronous writes.
             writeSync(stream === "stderr" ? 2 : 1, text);

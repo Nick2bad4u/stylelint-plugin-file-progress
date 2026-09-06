@@ -210,6 +210,13 @@ describe("observational progress", () => {
 });
 
 describe("formatting and settings", () => {
+    it("retains the supplied path when the working directory is unavailable", () => {
+        expect.hasAssertions();
+        expect(relativePath("/removed/project/styles.css", "")).toBe(
+            "/removed/project/styles.css"
+        );
+    });
+
     it("resolves defaults and deprecated alias precedence", () => {
         expect.hasAssertions();
 
@@ -327,7 +334,6 @@ describe("formatting and settings", () => {
     });
 });
 
-// eslint-disable-next-line test-signal/require-negative-path -- The parameterized invalid-option suite below asserts rejection; this rule does not recognize it.each.
 describe("stylelint contract", () => {
     it("exports one native rule and all presets", () => {
         expect.hasAssertions();
@@ -365,7 +371,11 @@ describe("stylelint contract", () => {
     it("does not add diagnostics or alter CSS and accepts null", async () => {
         expect.hasAssertions();
 
-        for (const ruleEntry of [null, [true, { hide: true }]]) {
+        for (const ruleEntry of [
+            null,
+            [true, null],
+            [true, { hide: true }],
+        ]) {
             const result = await stylelint.lint({
                 code: "a { color: red; }",
                 config: {
@@ -377,5 +387,24 @@ describe("stylelint contract", () => {
             expect(result.errored).toBe(false);
             expect(result.results[0]?.warnings).toStrictEqual([]);
         }
+    });
+
+    it("reports invalid options once for a document containing multiple roots", async () => {
+        expect.hasAssertions();
+
+        const result = await stylelint.lint({
+            code: "<style>a{color:red}</style><style>b{color:blue}</style>",
+            codeFilename: "page.html",
+            config: {
+                plugins: plugin,
+                rules: {
+                    "file-progress/activate": [true, { mode: "invalid" }],
+                },
+            },
+            customSyntax: "postcss-html",
+        });
+
+        expect(result.errored).toBe(true);
+        expect(result.results[0]?.invalidOptionWarnings).toHaveLength(1);
     });
 });

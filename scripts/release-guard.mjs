@@ -54,7 +54,8 @@ if (remoteTags) {
         );
 }
 const response = await fetch(
-    `https://registry.npmjs.org/${manifest.name}/${version}`
+    `https://registry.npmjs.org/${manifest.name}/${version}`,
+    { signal: AbortSignal.timeout(30000) }
 );
 if (response.status !== 404)
     throw new Error(

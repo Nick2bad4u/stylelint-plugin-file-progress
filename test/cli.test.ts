@@ -395,4 +395,54 @@ describe("command-line integration", () => {
         expect(result.stdout).toBe("");
         expect(result.stderr).toBe("");
     });
+
+    it.each(["stderr", "stdout"] as const)(
+        "keeps worker %s output in the captured stream",
+        (stream) => {
+            expect.hasAssertions();
+
+            const folder = fixture();
+            const workerFile = path.join(folder, "worker.mjs");
+            const stylelintPath = createRequire(import.meta.url).resolve(
+                "stylelint"
+            );
+            const stylelintUrl = pathToFileURL(stylelintPath).href;
+            writeFileSync(
+                workerFile,
+                `import stylelint from ${JSON.stringify(stylelintUrl)};
+import plugin from ${JSON.stringify(pathToFileURL(entry).href)};
+await stylelint.lint({code: 'a { color: red; }', codeFilename: 'worker.css', config: {plugins: plugin, rules: {'file-progress/activate': [true, {outputStream: ${JSON.stringify(stream)}, detailedSuccess: true}]}}});`
+            );
+            const result = spawnSync(
+                process.execPath,
+                [
+                    "--input-type=module",
+                    "--eval",
+                    `import { Worker } from 'node:worker_threads';
+const worker = new Worker(new URL(${JSON.stringify(pathToFileURL(workerFile).href)}), {stdout: true, stderr: true, execArgv: []});
+let stdout = '', stderr = '';
+worker.stdout.on('data', data => { stdout += data; });
+worker.stderr.on('data', data => { stderr += data; });
+worker.on('error', error => { throw error; });
+worker.on('exit', code => { console.log(JSON.stringify({code, stdout, stderr})); });`,
+                ],
+                { encoding: "utf8", env: cliEnvironment(), timeout: 20_000 }
+            );
+
+            expect(result.status).toBe(0);
+            expect(result.stderr).toBe("");
+
+            const captured: { code: number; stderr: string; stdout: string } =
+                JSON.parse(result.stdout);
+
+            expect(captured.code).toBe(0);
+            expect(captured[stream === "stdout" ? "stderr" : "stdout"]).toBe(
+                ""
+            );
+            expect(captured[stream]).toContain("worker.css");
+            expect(captured[stream].match(/Files observed: 1/gv)).toHaveLength(
+                1
+            );
+        }
+    );
 });

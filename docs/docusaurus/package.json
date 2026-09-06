@@ -1,6 +1,6 @@
 {
     "name": "@stylelint-plugin-file-progress/docs",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "private": true,
     "description": "Documentation for stylelint-plugin-file-progress",
     "keywords": [
@@ -27,7 +27,7 @@
     ],
     "main": "docusaurus.config.ts",
     "scripts": {
-        "docs:api": "typedoc --options typedoc.config.json",
+        "docs:api": "typedoc --options typedoc.config.json && npm --prefix ../.. run docs:check-api",
         "docs:build": "npm run docs:api && npm --prefix ../.. run build:eslint-inspector && npm --prefix ../.. run build:stylelint-inspector && docusaurus build",
         "serve": "docusaurus serve",
         "start": "docusaurus start"
