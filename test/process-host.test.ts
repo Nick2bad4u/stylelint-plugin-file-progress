@@ -15,11 +15,11 @@ describe("process boundary", () => {
         expect.hasAssertions();
         expect(processHost.now()).toBeGreaterThanOrEqual(0);
         expect(processHost.cwd()).toBe(process.cwd());
-        expect(processHost.isTTY("stderr")).toBe(process.stderr.isTTY);
-        expect(processHost.isTTY("stdout")).toBe(process.stdout.isTTY);
+        expect(processHost.isTTY("stderr")).toBe(Boolean(process.stderr.isTTY));
+        expect(processHost.isTTY("stdout")).toBe(Boolean(process.stdout.isTTY));
         expect(processHost.color("stderr")).toBeTypeOf("boolean");
         expect(processHost.color("stdout")).toBe(
-            pc.isColorSupported && process.stdout.isTTY
+            pc.isColorSupported && Boolean(process.stdout.isTTY)
         );
     });
 

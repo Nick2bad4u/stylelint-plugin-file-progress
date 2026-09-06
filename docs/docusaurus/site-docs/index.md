@@ -28,4 +28,4 @@ Keep your existing shared config before the progress preset in `extends`. Your l
 - [Understand the metrics](./compatibility.md): process summaries, cached files, and custom syntax.
 - [Develop the plugin](./developer/contributing.md): local checks, clean consumers, and generated docs.
 
-Default output goes to stderr. Redirected stdout remains available for JSON or another Stylelint formatter.
+Default progress goes to stderr, leaving stdout untouched. Stylelint also writes its normal CLI report to stderr; use its `--output-file report.json --formatter json` options for an intact machine-readable report.

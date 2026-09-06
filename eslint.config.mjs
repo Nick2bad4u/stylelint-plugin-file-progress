@@ -6,6 +6,7 @@ const config = [
             "dist/**",
             "coverage/**",
             ".temp/**",
+            ".playwright-cli/**",
             "docs/docusaurus/build/**",
             "docs/docusaurus/.docusaurus/**",
             "docs/docusaurus/site-docs/developer/api/**",
@@ -13,6 +14,14 @@ const config = [
         ],
     },
     ...nick2bad4u.configs.all,
+    {
+        files: ["src/_internal/controller.ts", "test/process-host.test.ts"],
+        name: "Node types declare isTTY as boolean but pipe-backed process streams omit it at runtime",
+        rules: {
+            "unicorn/no-useless-coercion": "off",
+            "@typescript-eslint/no-unnecessary-type-conversion": "off",
+        },
+    },
     {
         files: ["src/plugin.ts"],
         name: "The public package boundary exports rule and option types and attaches properties to an array",

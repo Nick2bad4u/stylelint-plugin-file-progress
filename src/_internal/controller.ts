@@ -165,9 +165,9 @@ export class ProgressController {
 
 /** Real process boundary. Synchronous final writes cannot be lost on exit. */
 export const processHost: ProgressHost = {
-    color: (stream) => pc.isColorSupported && process[stream].isTTY,
+    color: (stream) => pc.isColorSupported && Boolean(process[stream].isTTY),
     cwd: () => process.cwd(),
-    isTTY: (stream) => process[stream].isTTY,
+    isTTY: (stream) => Boolean(process[stream].isTTY),
     now: () => performance.now(),
     onExit: (callback) => {
         process.once("exit", callback);
