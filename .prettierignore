@@ -10,3 +10,5 @@ docs/docusaurus/site-docs/developer/api
 docs/docusaurus/static/*-inspector
 .playwright-cli/
 reports/
+.lychee.report.md
+.lycheecache

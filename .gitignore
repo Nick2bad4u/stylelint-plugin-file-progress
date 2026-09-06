@@ -15,3 +15,5 @@ docs/docusaurus/static/stylelint-inspector/
 .stylelintcache
 .playwright-cli/
 reports/
+.lychee.report.md
+.lycheecache

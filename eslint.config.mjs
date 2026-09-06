@@ -8,6 +8,8 @@ const config = [
             ".temp/**",
             ".playwright-cli/**",
             "reports/**",
+            ".lychee.report.md",
+            ".lycheecache",
             "docs/docusaurus/build/**",
             "docs/docusaurus/.docusaurus/**",
             "docs/docusaurus/site-docs/developer/api/**",
