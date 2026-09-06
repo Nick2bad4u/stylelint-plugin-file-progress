@@ -45,6 +45,8 @@ Release jobs verify the committed version, main-branch ancestry, tag identity, a
 
 ## Maintenance boundaries
 
+Stylelint Config Inspector 2.3.5 restores three root-relative icon URLs during hydration even when built with `--base`. A scoped post-build correction fixes only those icon link values in its generated JavaScript. Documentation checks reject the broken URLs and require the icon files. Remove this correction when the inspector fixes its static build.
+
 The documentation parser override is a maintained fork, not an upstream `image-size` release. Its source delta, exact version, license, API compatibility, and integrity are documented in [contributing](./contributing.md). Reassess it when Docusaurus adopts a patched parser; it is not shipped as a plugin runtime dependency.
 
 Counts cover observed rule-processing events. Cache skips and parse failures before rule execution are absent; throttling can hide live notifications while counts continue. Long-lived applications aggregate until shutdown. Worker threads have independent JavaScript state and summaries, with output sent through their selected worker stream. No display claims an exact input total, ETA, problem count, or individual-file completion time.
