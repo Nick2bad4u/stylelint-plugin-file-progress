@@ -147,7 +147,7 @@
         "docs:typecheck": "tsc --noEmit -p docs/docusaurus/tsconfig.json",
         "lint": "eslint .",
         "lint:actions": "actionlint -color -shellcheck= -pyflakes=",
-        "lint:all": "npm run lint && npm run lint:prettier && npm run lint:css && npm run lint:remark && npm run lint:package && npm run lint:yaml && npm run lint:actions && npm run lint:secretlint",
+        "lint:all": "npm run lint && npm run lint:prettier && npm run lint:css && npm run lint:remark && npm run lint:package && npm run lint:yaml && npm run lint:actions && npm run lint:secretlint && npm run lint:jscpd",
         "lint:compat:stylelint16": "node scripts/compat.mjs --stylelint=16.0.0",
         "lint:css": "stylelint \"docs/docusaurus/src/**/*.css\"",
         "lint:css:fix": "stylelint \"docs/docusaurus/src/**/*.css\" --fix",

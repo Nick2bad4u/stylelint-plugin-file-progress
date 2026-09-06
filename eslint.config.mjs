@@ -7,6 +7,7 @@ const config = [
             "coverage/**",
             ".temp/**",
             ".playwright-cli/**",
+            "reports/**",
             "docs/docusaurus/build/**",
             "docs/docusaurus/.docusaurus/**",
             "docs/docusaurus/site-docs/developer/api/**",
