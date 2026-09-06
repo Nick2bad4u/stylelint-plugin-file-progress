@@ -18,8 +18,8 @@ const config = [
         files: ["src/_internal/controller.ts", "test/process-host.test.ts"],
         name: "Node types declare isTTY as boolean but pipe-backed process streams omit it at runtime",
         rules: {
-            "unicorn/no-useless-coercion": "off",
             "@typescript-eslint/no-unnecessary-type-conversion": "off",
+            "unicorn/no-useless-coercion": "off",
         },
     },
     {
