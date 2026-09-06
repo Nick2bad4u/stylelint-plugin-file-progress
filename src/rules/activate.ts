@@ -1,4 +1,5 @@
 import stylelint from "stylelint";
+import { safeCastTo } from "ts-extras";
 
 import type { ProgressSettings } from "../types.js";
 
@@ -7,7 +8,15 @@ import { normalizeSettings, possibleOptions } from "../_internal/options.js";
 
 /** Public namespaced rule identifier. */
 export const ruleName = "file-progress/activate";
-const controllerRef: { current?: ProgressController } = {};
+const controllerKey = Symbol.for(
+    "stylelint-plugin-file-progress.controller.v1"
+);
+// Both module formats share a lazy controller in this process.
+const controllerRegistry = safeCastTo<
+    typeof globalThis & {
+        [controllerKey]?: ProgressController;
+    }
+>(globalThis);
 
 /** Report progress using Stylelint's documented per-root rule callback. */
 export const ruleFunction: stylelint.Rule =
@@ -22,10 +31,14 @@ export const ruleFunction: stylelint.Rule =
             )
         )
             return;
-        controllerRef.current ??= new ProgressController(processHost);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- The registry key is absent until either module format observes its first file.
+        controllerRegistry[controllerKey] ??= new ProgressController(
+            processHost
+        );
+        const controller = controllerRegistry[controllerKey];
         const filename =
             result.opts.from ?? root.source?.input.file ?? "<input>";
-        controllerRef.current.observe(
+        controller.observe(
             result,
             filename.length > 0 ? filename : "<input>",
             normalizeSettings(secondary)

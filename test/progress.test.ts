@@ -256,6 +256,22 @@ describe("formatting and settings", () => {
         expect(relativePath(file, cwd)).toBe(expected);
     });
 
+    it("preserves POSIX backslashes and escapes C1 terminal controls", () => {
+        expect.hasAssertions();
+
+        const options = normalizeSettings({ pathFormat: "basename" });
+
+        expect(
+            formatProgress(String.raw`/project/foo\bar.css`, options, false)
+        ).toBe(String.raw`SFP • linting foo\bar.css`);
+        expect(
+            formatProgress(String.raw`C:\project\bar.css`, options, false)
+        ).toBe("SFP • linting bar.css");
+        expect(safeText("a\u{85}b\u{9F}c\u{7F}")).toBe(
+            String.raw`a\u0085b\u009fc\u007f`
+        );
+    });
+
     it("formats path, prefixes, multiline layouts, generic notices, and control characters", () => {
         expect.hasAssertions();
 

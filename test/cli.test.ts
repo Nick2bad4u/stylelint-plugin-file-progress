@@ -220,6 +220,27 @@ describe("command-line integration", () => {
         expect(result.stderr.match(/Files observed:/gv)).toHaveLength(1);
     });
 
+    it("shares one process summary across ESM and CommonJS lint calls", () => {
+        expect.hasAssertions();
+
+        const program = `import stylelint from 'stylelint'; import * as module from 'node:module'; import esm from ${JSON.stringify(pathToFileURL(entry).href)}; const common=module.createRequire(import.meta.url)(${JSON.stringify(path.resolve("dist/plugin.cjs"))}); const before=process.listenerCount('exit'); for(const plugins of [esm,common])await stylelint.lint({code:'a{color:red}',codeFilename:'shared.css',config:{plugins,rules:{'file-progress/activate':[true,{detailedSuccess:true}]}}}); if(process.listenerCount('exit')!==before+1)throw Error('duplicate shutdown hooks');`;
+        const result = spawnSync(
+            process.execPath,
+            [
+                "--input-type=module",
+                "-e",
+                program,
+            ],
+            { encoding: "utf8", timeout: 20_000 }
+        );
+
+        expect(result.status).toBe(0);
+        expect(result.stdout).toBe("");
+        expect(result.stderr.match(/linting shared\.css/gv)).toHaveLength(2);
+        expect(result.stderr.match(/Files observed:/gv)).toHaveLength(1);
+        expect(result.stderr).toContain("Files observed: 2");
+    });
+
     it("does not announce syntax failures that never reach the rule", () => {
         expect.hasAssertions();
 

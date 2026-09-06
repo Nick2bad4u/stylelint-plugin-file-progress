@@ -147,7 +147,9 @@ export class ProgressController {
             ? `${frameSet[(this.#count - 1) % frameSet.length] ?? "•"} `
             : "";
         const text = formatProgress(
-            relativePath(filename, this.#host.cwd()),
+            settings.pathFormat === "basename"
+                ? filename
+                : relativePath(filename, this.#host.cwd()),
             settings,
             this.#host.color(settings.outputStream)
         );

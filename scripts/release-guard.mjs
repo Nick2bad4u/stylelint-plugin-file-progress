@@ -27,6 +27,32 @@ execFileSync(
         stdio: "inherit",
     }
 );
+const tagRef = `refs/tags/v${version}`;
+const remoteTags = execFileSync(
+    "git",
+    [
+        "ls-remote",
+        "--tags",
+        "origin",
+        tagRef,
+        `${tagRef}^{}`,
+    ],
+    { encoding: "utf8" }
+).trim();
+if (remoteTags) {
+    const entries = remoteTags
+        .split("\n")
+        .map((line) => line.trim().split(/\s+/u));
+    const tagCommit = (entries.find((entry) => entry[1] === `${tagRef}^{}`) ??
+        entries[0])?.[0];
+    const selectedCommit = execFileSync("git", ["rev-parse", "HEAD"], {
+        encoding: "utf8",
+    }).trim();
+    if (tagCommit !== selectedCommit)
+        throw new Error(
+            `Publication blocked: v${version} points at a different commit`
+        );
+}
 const response = await fetch(
     `https://registry.npmjs.org/${manifest.name}/${version}`
 );

@@ -26,7 +26,7 @@ export function formatProgress(
         return `${prefix}linting project files...`;
     const displayed =
         options.pathFormat === "basename"
-            ? path.win32.basename(filename)
+            ? pathImplementation(filename).basename(filename)
             : filename;
     const text = colors.green(safeText(displayed));
     if (options.hidePrefix) return text;
@@ -66,10 +66,7 @@ export function formatSummary(
 
 /** Render Windows and POSIX paths consistently, including cross-platform tests. */
 export function relativePath(filename: string, cwd: string): string {
-    const paths =
-        path.win32.isAbsolute(filename) && !path.posix.isAbsolute(filename)
-            ? path.win32
-            : path;
+    const paths = pathImplementation(filename);
     if (!paths.isAbsolute(filename)) return filename;
     return paths.relative(cwd, filename) || paths.basename(filename);
 }
@@ -79,10 +76,17 @@ export function safeText(value: string): string {
     return arrayJoin(
         Array.from(stripVTControlCharacters(value), (character) => {
             const code = character.codePointAt(0) ?? 0;
-            return code === 127 || code < 32
+            if (code >= 127 && code <= 159)
+                return String.raw`\u${code.toString(16).padStart(4, "0")}`;
+            return code < 32
                 ? JSON.stringify(character).slice(1, -1)
                 : character;
         }),
         ""
     );
+}
+
+function pathImplementation(filename: string): typeof path.posix {
+    if (path.posix.isAbsolute(filename)) return path.posix;
+    return path.win32.isAbsolute(filename) ? path.win32 : path;
 }
