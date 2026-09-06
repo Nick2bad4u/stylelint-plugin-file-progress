@@ -134,6 +134,7 @@
         "build": "node scripts/build.mjs",
         "build:eslint-inspector": "eslint-config-inspector build --outDir docs/docusaurus/static/eslint-inspector --base /stylelint-plugin-file-progress/eslint-inspector/",
         "build:stylelint-inspector": "stylelint-config-inspector build --outDir docs/docusaurus/static/stylelint-inspector --base /stylelint-plugin-file-progress/stylelint-inspector/",
+        "postbuild:stylelint-inspector": "node scripts/fix-inspector-assets.mjs",
         "changelog:generate": "git cliff --config node_modules/gitcliff-config-nick2bad4u/cliff.toml --github-repo Nick2bad4u/stylelint-plugin-file-progress --output CHANGELOG.md",
         "changelog:preview": "git cliff --config node_modules/gitcliff-config-nick2bad4u/cliff.toml --unreleased",
         "coverage": "npm run test:coverage",

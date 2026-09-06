@@ -35,6 +35,8 @@ Terminal frames advance when files are observed, with complete lines and no anim
 
 ## Release gates
 
+The main branch requires all three operating-system test jobs, the combined quality/documentation/package job, and CodeQL analysis before merging. Dependabot updates to CodeQL actions are grouped so `init` and `analyze` stay on the same release. Manual CI and CodeQL triggers allow validation of commits created by automation that cannot trigger a new push workflow with `GITHUB_TOKEN`.
+
 `npm run release:verify` checks source types, all shared-config linters, runtime coverage, malformed documentation images, generated content, the documentation application and public API, package exports, and clean package consumers. CI also runs coverage on Linux, Windows, and macOS, then separately verifies Node 22.0.0 consumers. Each runtime coverage threshold remains 90%.
 
 Consumer checks install the packed artifact with exact Stylelint 16.0.0, current 16.x, exact 17.14.0, and current 17.x. Both ESM and CommonJS entrypoints and all seven preset subpaths are exercised. Legacy TypeScript resolution is tested with Stylelint 16; Stylelint 17 exposes its own types only through modern package exports. CommonJS with Stylelint 17 requires Node 22.12 or newer because of Stylelint's ESM loading requirements.
@@ -42,6 +44,8 @@ Consumer checks install the packed artifact with exact Stylelint 16.0.0, current
 Release jobs verify the committed version, main-branch ancestry, tag identity, and absence of an existing npm version. Publication uses GitHub OIDC and npm provenance for the exact verified tarball. A subsequent job compares npm's integrity with that tarball and requires its provenance attestation before creating the GitHub Release.
 
 ## Maintenance boundaries
+
+Stylelint Config Inspector 2.3.5 restores three root-relative icon URLs during hydration even when built with `--base`. A scoped post-build correction fixes only those icon link values in its generated JavaScript. Documentation checks reject the broken URLs and require the icon files. Remove this correction when the inspector fixes its static build.
 
 The documentation parser override is a maintained fork, not an upstream `image-size` release. Its source delta, exact version, license, API compatibility, and integrity are documented in [contributing](./contributing.md). Reassess it when Docusaurus adopts a patched parser; it is not shipped as a plugin runtime dependency.
 

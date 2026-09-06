@@ -1,4 +1,4 @@
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, readdir } from "node:fs/promises";
 import { configNames } from "../dist/plugin.js";
 import { optionDemos } from "./demo-cases.mjs";
 
@@ -26,6 +26,19 @@ for (const { name, group } of [
     await access(root + `demos/${group}/${name}.gif`);
 }
 const homepage = await readFile(root + "index.html", "utf8");
+const inspector = root + "stylelint-inspector/";
+for (const icon of [
+    "favicon.svg",
+    "stylelint/stylelint-icon-black.svg",
+    "stylelint/stylelint-icon-white-512.png",
+])
+    await access(inspector + icon);
+for (const file of await readdir(inspector + "_nuxt/")) {
+    if (!file.endsWith(".js")) continue;
+    const source = await readFile(inspector + "_nuxt/" + file, "utf8");
+    if (/href:[`"']\/(?:favicon\.svg|stylelint\/)/u.test(source))
+        throw new Error(`Inspector icon URL ignores the Pages base: ${file}`);
+}
 if (
     !homepage.includes("Stylelint File Progress") ||
     homepage.includes("stylelint-plugin-font")
