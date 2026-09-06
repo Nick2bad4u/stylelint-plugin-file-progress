@@ -43,7 +43,7 @@ Consumer checks install the packed artifact with exact Stylelint 16.0.0, current
 
 Release jobs verify the committed version, main-branch ancestry, tag identity, and absence of an existing npm version. Publication uses GitHub OIDC and npm provenance for the exact verified tarball. A subsequent job compares npm's integrity with that tarball and requires its provenance attestation before creating the GitHub Release.
 
-The tarball publish command uses an explicit `./` prefix, as npm 12 otherwise interprets `release/package.tgz` as GitHub shorthand. A dry run in the verification job exercises the actual local tarball argument before the publishing job starts. Provenance is disabled only for that non-uploading dry run; the publishing job requires it.
+The tarball publish command uses an explicit `./` prefix, as npm 12 otherwise interprets `release/package.tgz` as GitHub shorthand. The portable `npm run release:check-tarball` command requires exactly one artifact in `release/` and exercises its local tarball argument in a dry run before the publishing job starts. Provenance is disabled only for that non-uploading dry run; the publishing job requires it.
 
 ## Maintenance boundaries
 
