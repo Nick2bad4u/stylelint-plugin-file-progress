@@ -1,0 +1,8 @@
+Terminal progress behavior and option names are adapted from eslint-plugin-file-progress-2,
+Copyright (c) 2026 Nick2bad4u
+Copyright (c) 2020 Sibiraj
+Distributed under the MIT License.
+Original project: https://github.com/sibiraj-s/eslint-plugin-file-progress
+Behavior reference: https://github.com/Nick2bad4u/eslint-plugin-file-progress-2
+
+The MIT license text accompanying this distribution applies to adapted portions.

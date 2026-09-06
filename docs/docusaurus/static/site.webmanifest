@@ -1,0 +1,16 @@
+{
+    "background_color": "#101923",
+    "display": "standalone",
+    "icons": [
+        {
+            "purpose": "any",
+            "sizes": "any",
+            "src": "img/favicon.svg",
+            "type": "image/svg+xml"
+        }
+    ],
+    "name": "Stylelint File Progress",
+    "short_name": "File Progress",
+    "start_url": "/stylelint-plugin-file-progress/",
+    "theme_color": "#10bfae"
+}
