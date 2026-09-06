@@ -37,6 +37,10 @@
 
 - [`7219cb4`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/7219cb46452644b06820c450ee1acc261b27ee51 "Diff: 3 files, +55 | -11") — 🐛 [fix] Bootstrap npm before cache restoration in Actions&nbsp;<sub><em>(3&nbsp;files,&nbsp;+55,&nbsp;-11)</em></sub>
 
+### 📝 Documentation
+
+- [`dca91cb`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/dca91cb03e3c0df4b554941bd748a93b0f0987ae "Diff: 1 file, +62 | -4") — 📝 [docs] Record the complete 1.0.0 release history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+62,&nbsp;-4)</em></sub>
+
 ### 🎨 Styling
 
 - [`fdf19f0`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/fdf19f01f0317daa587354098474eac204d6a05d "Diff: 1 file, +1 | -1") — 🎨 [style] Order the documented runtime-boundary lint overrides&nbsp;<sub><em>(1&nbsp;file,&nbsp;+1,&nbsp;-1)</em></sub>
@@ -52,6 +56,10 @@
 - [`02d297a`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/02d297abacc74d4c20507b4a9493779742f96f89 "Diff: 5 files, +7 | -1") — 🧹 [chore] Keep generated QA reports outside source checks&nbsp;<sub><em>(5&nbsp;files,&nbsp;+7,&nbsp;-1)</em></sub>
 
 - [`175024c`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/175024cfff005672b09765769f41384681985edb "Diff: 3 files, +40 | -0") — 🧹 [chore] Initialize Stylelint file progress repository&nbsp;<sub><em>(3&nbsp;files,&nbsp;+40,&nbsp;-0)</em></sub>
+
+### 👷 CI/CD
+
+- [`4a26a57`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/4a26a5770e18963eb6cff8aee255f55dabf82d29 "Diff: 1 file, +2 | -0") — 👷 [ci] Finish draft releases when retrying interrupted uploads&nbsp;<sub><em>(1&nbsp;file,&nbsp;+2,&nbsp;-0)</em></sub>
 
 ### New Contributors
 
