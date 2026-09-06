@@ -79,12 +79,12 @@ const config = {
                             label: "Repository",
                         },
                         {
-                            href: "pathname:///eslint-inspector/index.html",
+                            href: "pathname:///eslint-inspector/",
                             label: "ESLint inspector",
                             target: "_self",
                         },
                         {
-                            href: "pathname:///stylelint-inspector/index.html",
+                            href: "pathname:///stylelint-inspector/",
                             label: "Stylelint inspector",
                             target: "_self",
                         },

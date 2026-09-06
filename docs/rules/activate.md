@@ -50,6 +50,17 @@ Set the rule to `null` to disable it. Invalid options produce normal Stylelint c
 
 `hideDirectoryNames: true` is a deprecated alias for `pathFormat: "basename"`. An explicit `pathFormat` takes precedence. Marks and filenames are escaped before printing control characters.
 
+- `mode` accepts `"file"`, `"compact"`, or `"summary-only"`.
+- `pathFormat` accepts `"relative"` (relative to the process working directory) or `"basename"`.
+- `spinnerStyle` accepts `"arc"`, `"bounce"`, `"clock"`, `"dots"`, or `"line"`. Frames are shown only on a terminal.
+- `outputStream` accepts `"stderr"` or `"stdout"`. Choosing stdout mixes progress into that stream, including autofix output.
+- `minFilesBeforeShow` and `throttleMs` are nonnegative safe integers. The first controls the observed-file threshold; the second sets the minimum milliseconds between displayed updates.
+- `hide` suppresses progress and summaries; `showSummaryWhenHidden` restores the final summary while still honoring the file threshold and `ttyOnly`.
+- `hideFileName` uses a generic activity notice. `hidePrefix` shows just the filename in file mode. `fileNameOnNewLine` places the filename below the progress prefix.
+- `prefixMark`, `successMark`, `failureMark`, and `successMessage` accept nonempty strings. `detailedSuccess` adds the process metrics to both successful and unsuccessful shutdown summaries.
+
+Each notification uses its validated file settings. The last observed valid settings determine the final summary.
+
 ## Process summaries
 
 A summary is printed once at process shutdown after at least one observed input. Detailed mode includes the number of observed file-processing events, elapsed time since the first observed file, derived throughput, and process exit code. Zero elapsed time reports zero throughput instead of inventing a rate.
