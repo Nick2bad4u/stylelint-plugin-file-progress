@@ -102,8 +102,8 @@
 
 ### New Contributors
 
-- @dependabot[bot] made their first contribution in [#8](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/8)
-- @Nick2bad4u made their first contribution in [#9](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/9)
+- @dependabot[bot] made their first contribution in [#2](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/2)
+- @Nick2bad4u made their first contribution in [#1](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/1)
 
 ## ⭐ Contributors
 
