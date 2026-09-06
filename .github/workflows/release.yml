@@ -63,6 +63,11 @@ jobs:
               name: "Run mkdir -p release && npm pack --ignore-scripts --pack-destination release"
               shell: "bash"
               timeout-minutes: 40
+            - name: "Validate local tarball publication without uploading"
+              # The verification job does not request a signing identity.
+              run: "npm publish ./release/*.tgz --dry-run --access public --provenance=false --ignore-scripts"
+              shell: "bash"
+              timeout-minutes: 5
             - uses: "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02" # v4.6.2
               with:
                   name: "verified-package"
@@ -108,7 +113,7 @@ jobs:
               shell: "bash"
               timeout-minutes: 40
             - name: "Publish verified tarball with provenance"
-              run: "npm publish release/*.tgz --access public --provenance --ignore-scripts"
+              run: "npm publish ./release/*.tgz --access public --provenance --ignore-scripts"
               shell: "bash"
               timeout-minutes: 40
         timeout-minutes: 60
