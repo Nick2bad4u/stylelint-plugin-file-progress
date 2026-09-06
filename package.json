@@ -1,0 +1,268 @@
+{
+    "$schema": "https://www.schemastore.org/package.json",
+    "name": "stylelint-plugin-file-progress",
+    "version": "0.1.0",
+    "private": false,
+    "description": "Live per-file progress and process summaries for Stylelint",
+    "keywords": [
+        "stylelint",
+        "stylelint-plugin",
+        "progress",
+        "css"
+    ],
+    "homepage": "https://nick2bad4u.github.io/stylelint-plugin-file-progress/",
+    "bugs": {
+        "url": "https://github.com/Nick2bad4u/stylelint-plugin-file-progress/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Nick2bad4u/stylelint-plugin-file-progress.git"
+    },
+    "license": "MIT",
+    "author": "Nick2bad4u",
+    "contributors": [
+        {
+            "name": "Nick2bad4u",
+            "url": "https://github.com/Nick2bad4u"
+        }
+    ],
+    "sideEffects": false,
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/plugin.d.ts",
+                "default": "./dist/plugin.js"
+            },
+            "require": {
+                "types": "./dist/plugin.d.cts",
+                "default": "./dist/plugin.cjs"
+            }
+        },
+        "./configs/recommended": {
+            "import": {
+                "types": "./dist/configs/recommended.d.ts",
+                "default": "./dist/configs/recommended.js"
+            },
+            "require": {
+                "types": "./dist/configs/recommended.d.cts",
+                "default": "./dist/configs/recommended.cjs"
+            }
+        },
+        "./configs/recommended-ci": {
+            "import": {
+                "types": "./dist/configs/recommended-ci.d.ts",
+                "default": "./dist/configs/recommended-ci.js"
+            },
+            "require": {
+                "types": "./dist/configs/recommended-ci.d.cts",
+                "default": "./dist/configs/recommended-ci.cjs"
+            }
+        },
+        "./configs/recommended-ci-detailed": {
+            "import": {
+                "types": "./dist/configs/recommended-ci-detailed.d.ts",
+                "default": "./dist/configs/recommended-ci-detailed.js"
+            },
+            "require": {
+                "types": "./dist/configs/recommended-ci-detailed.d.cts",
+                "default": "./dist/configs/recommended-ci-detailed.cjs"
+            }
+        },
+        "./configs/recommended-compact": {
+            "import": {
+                "types": "./dist/configs/recommended-compact.d.ts",
+                "default": "./dist/configs/recommended-compact.js"
+            },
+            "require": {
+                "types": "./dist/configs/recommended-compact.d.cts",
+                "default": "./dist/configs/recommended-compact.cjs"
+            }
+        },
+        "./configs/recommended-detailed": {
+            "import": {
+                "types": "./dist/configs/recommended-detailed.d.ts",
+                "default": "./dist/configs/recommended-detailed.js"
+            },
+            "require": {
+                "types": "./dist/configs/recommended-detailed.d.cts",
+                "default": "./dist/configs/recommended-detailed.cjs"
+            }
+        },
+        "./configs/recommended-summary-only": {
+            "import": {
+                "types": "./dist/configs/recommended-summary-only.d.ts",
+                "default": "./dist/configs/recommended-summary-only.js"
+            },
+            "require": {
+                "types": "./dist/configs/recommended-summary-only.d.cts",
+                "default": "./dist/configs/recommended-summary-only.cjs"
+            }
+        },
+        "./configs/recommended-tty": {
+            "import": {
+                "types": "./dist/configs/recommended-tty.d.ts",
+                "default": "./dist/configs/recommended-tty.js"
+            },
+            "require": {
+                "types": "./dist/configs/recommended-tty.d.cts",
+                "default": "./dist/configs/recommended-tty.cjs"
+            }
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./dist/plugin.cjs",
+    "module": "./dist/plugin.js",
+    "types": "./dist/plugin.d.ts",
+    "typesVersions": {
+        "*": {
+            "configs/*": [
+                "dist/configs/*.d.ts"
+            ]
+        }
+    },
+    "files": [
+        "dist",
+        "docs/rules",
+        "CHANGELOG.md",
+        "NOTICE"
+    ],
+    "workspaces": [
+        "docs/docusaurus"
+    ],
+    "scripts": {
+        "build": "node scripts/build.mjs",
+        "build:eslint-inspector": "eslint-config-inspector build --outDir docs/docusaurus/static/eslint-inspector --base /stylelint-plugin-file-progress/eslint-inspector/",
+        "build:stylelint-inspector": "stylelint-config-inspector build --outDir docs/docusaurus/static/stylelint-inspector --base /stylelint-plugin-file-progress/stylelint-inspector/",
+        "changelog:generate": "git cliff --config node_modules/gitcliff-config-nick2bad4u/cliff.toml --github-repo Nick2bad4u/stylelint-plugin-file-progress --output CHANGELOG.md",
+        "changelog:preview": "git cliff --config node_modules/gitcliff-config-nick2bad4u/cliff.toml --unreleased",
+        "coverage": "npm run test:coverage",
+        "docs:api": "npm run docs:api --workspace docs/docusaurus",
+        "docs:build": "npm run build && npm run docs:build --workspace docs/docusaurus",
+        "docs:check-links": "node scripts/check-docs.mjs",
+        "docs:demos:check": "node scripts/demos.mjs --check",
+        "docs:demos:write": "node scripts/demos.mjs",
+        "docs:serve": "npm run serve --workspace docs/docusaurus",
+        "docs:start": "npm run start --workspace docs/docusaurus",
+        "docs:typecheck": "tsc --noEmit -p docs/docusaurus/tsconfig.json",
+        "lint": "eslint .",
+        "lint:actions": "actionlint -color -shellcheck= -pyflakes=",
+        "lint:all": "npm run lint && npm run lint:prettier && npm run lint:css && npm run lint:remark && npm run lint:package && npm run lint:yaml && npm run lint:actions && npm run lint:secretlint",
+        "lint:compat:stylelint16": "node scripts/compat.mjs --stylelint=16.0.0",
+        "lint:css": "stylelint \"docs/docusaurus/src/**/*.css\"",
+        "lint:css:fix": "stylelint \"docs/docusaurus/src/**/*.css\" --fix",
+        "lint:fix": "eslint . --fix",
+        "lint:gitleaks": "gitleaks dir --config .gitleaks.toml --redact .",
+        "lint:jscpd": "jscpd src --config node_modules/jscpd-config-nick2bad4u/jscpd.json",
+        "lint:lychee": "lychee --config node_modules/lychee-config-nick2bad4u/lychee.toml README.md docs/rules",
+        "lint:package": "sort-package-json --check package.json docs/docusaurus/package.json && npmPkgJsonLint .",
+        "lint:package-check": "publint && attw --pack",
+        "lint:prettier": "prettier . --check",
+        "lint:prettier:fix": "prettier . --write",
+        "lint:remark": "remark README.md CONTRIBUTING.md SECURITY.md SUPPORT.md AGENTS.md docs --frail",
+        "lint:secretlint": "secretlint \"src/**\" \"scripts/**\" \".github/**\"",
+        "lint:yaml": "yamllint-js .",
+        "lint:yamllint": "npm run lint:yaml",
+        "prepublishOnly": "npm run release:verify",
+        "release:check": "npm run release:verify",
+        "release:verify": "npm run build && npm run typecheck && npm run lint:all && npm run test:coverage && npm run sync:rules:check && npm run docs:demos:check && npm run docs:typecheck && npm run docs:build && npm run docs:check-links && npm run lint:package-check && npm run test:compat",
+        "sync:configs-rules-matrix": "node scripts/sync.mjs",
+        "sync:readme-rules-table": "node scripts/sync.mjs",
+        "sync:rules:check": "node scripts/sync.mjs",
+        "sync:rules:write": "node scripts/sync.mjs --write",
+        "pretest": "npm run build",
+        "test": "vitest run",
+        "test:compat": "node scripts/compat.mjs",
+        "test:compat:minimum": "node scripts/compat.mjs --minimum-node",
+        "test:coverage": "vitest run --coverage",
+        "test:coverage:ci": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=test-report.junit.xml",
+        "typecheck": "tsc --noEmit -p tsconfig.json",
+        "update:dependencies": "ncu --configFilePath node_modules/ncu-config-nick2bad4u --configFileName .ncurc.json"
+    },
+    "overrides": {
+        "qs": "^6.16.0",
+        "serialize-javascript": "^7.1.1",
+        "sockjs": {
+            "uuid": "^11.1.1"
+        }
+    },
+    "dependencies": {
+        "picocolors": "^1.1.1",
+        "ts-extras": "^1.3.0"
+    },
+    "devDependencies": {
+        "@arethetypeswrong/cli": "^0.18.5",
+        "@eslint/config-inspector": "^3.4.0",
+        "@types/node": "^26.4.1",
+        "@vitest/coverage-v8": "^5.0.0",
+        "esbuild": "^0.28.2",
+        "eslint": "^10.10.0",
+        "eslint-config-nick2bad4u": "^14.2.1",
+        "gitcliff-config-nick2bad4u": "^1.5.0",
+        "gitleaks-config-nick2bad4u": "^1.0.5",
+        "jscpd": "^5.1.2",
+        "jscpd-config-nick2bad4u": "^1.1.1",
+        "lychee-config-nick2bad4u": "^3.0.2",
+        "ncu-config-nick2bad4u": "^0.2.1",
+        "npm-check-updates": "^23.1.0",
+        "npm-package-json-lint": "^11.0.0",
+        "npm-package-json-lint-config-nick2bad4u": "^1.0.4",
+        "postcss": "^8.5.28",
+        "postcss-html": "^2.0.0",
+        "postcss-scss": "^4.0.9",
+        "prettier": "^3.9.6",
+        "prettier-config-nick2bad4u": "^2.0.4",
+        "publint": "^0.3.24",
+        "remark-cli": "^12.0.1",
+        "remark-config-nick2bad4u": "^1.1.4",
+        "secretlint": "^13.0.5",
+        "secretlint-config-nick2bad4u": "^1.1.2",
+        "sort-package-json": "^4.0.0",
+        "stylelint": "^17.15.0",
+        "stylelint-config-inspector": "^2.3.5",
+        "stylelint-config-nick2bad4u": "^2.2.1",
+        "stylelint-define-config": "^17.14.0",
+        "tsdoc-config-nick2bad4u": "^1.0.6",
+        "type-fest": "^5.9.0",
+        "typedoc": "^0.28.20",
+        "typedoc-config-nick2bad4u": "^2.1.0",
+        "typescript": "^6.0.3",
+        "vitest": "^5.0.0",
+        "yamllint-config-nick2bad4u": "^1.1.1",
+        "yamllint-js": "^0.2.4"
+    },
+    "peerDependencies": {
+        "stylelint": "^16.0.0 || ^17.14.0"
+    },
+    "peerDependenciesMeta": {
+        "stylelint": {
+            "optional": false
+        }
+    },
+    "packageManager": "npm@12.0.2",
+    "engines": {
+        "node": ">=22.0.0"
+    },
+    "devEngines": {
+        "runtime": {
+            "name": "node",
+            "version": "^22.22.3 || ^24.16.0 || >=26.3.0",
+            "onFail": "error"
+        },
+        "packageManager": {
+            "name": "npm",
+            "version": "12.0.2",
+            "onFail": "error"
+        }
+    },
+    "publishConfig": {
+        "provenance": true
+    },
+    "allowScripts": {
+        "esbuild@0.28.2": true,
+        "@swc/core@1.15.43": true,
+        "unrs-resolver@1.12.2": true,
+        "core-js": false,
+        "fsevents": false
+    }
+}

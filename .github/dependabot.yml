@@ -1,0 +1,40 @@
+version: 2
+updates:
+    - package-ecosystem: "npm"
+      directory: "/"
+      schedule:
+          interval: "monthly"
+          time: "05:30"
+          timezone: "America/Detroit"
+      groups:
+          development:
+              dependency-type: "development"
+      labels: ["dependencies"]
+      assignees:
+          - "Nick2bad4u"
+      commit-message:
+          prefix: "[dependabot]"
+          prefix-development: "[dependabot][dev]"
+          include: "scope"
+      cooldown:
+          default-days: 3
+      open-pull-requests-limit: 10
+      target-branch: "main"
+      versioning-strategy: "increase"
+    - package-ecosystem: "github-actions"
+      directory: "/"
+      schedule:
+          interval: "monthly"
+          time: "05:30"
+          timezone: "America/Detroit"
+      labels: ["github-actions"]
+      assignees:
+          - "Nick2bad4u"
+      commit-message:
+          prefix: "[dependabot]"
+          prefix-development: "[dependabot][dev]"
+          include: "scope"
+      cooldown:
+          default-days: 3
+      open-pull-requests-limit: 10
+      target-branch: "main"

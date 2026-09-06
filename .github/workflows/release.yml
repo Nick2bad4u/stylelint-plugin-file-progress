@@ -1,0 +1,102 @@
+name: "Release"
+on:
+    push:
+        tags: ["v*"]
+    workflow_dispatch:
+        inputs:
+            version:
+                description: "Version already committed to main (x.y.z)"
+                type: "string"
+                required: true
+permissions:
+    contents: "read"
+concurrency:
+    group: "release-${{ github.repository }}"
+    cancel-in-progress: "${{ false }}"
+jobs:
+    verify:
+        runs-on: "ubuntu-latest"
+        timeout-minutes: 60
+        steps:
+            - uses: "step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411" # v2.19.4
+              with:
+                  egress-policy: "audit"
+              name: "Run step-security/harden-runner"
+            - uses: "actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0" # v7.0.0
+              with:
+                  fetch-depth: 0
+              name: "Run actions/checkout"
+            - uses: "actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e" # v6.4.0
+              with:
+                  node-version-file: ".node-version"
+                  cache: "npm"
+              name: "Run actions/setup-node"
+            - run: |
+                  npm install --global --ignore-scripts npm@12.0.2
+                  npm ci
+                  go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+                  echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+              name: "Run npm install --global --ignore-scripts npm@12.0.2"
+              shell: "bash"
+              timeout-minutes: 40
+            - name: "Verify release identity and registry availability"
+              run: "node scripts/release-guard.mjs"
+              env:
+                  RELEASE_VERSION: "${{ inputs.version }}"
+              shell: "bash"
+              timeout-minutes: 40
+            - run: "npm run release:verify"
+              name: "Run npm run release:verify"
+              shell: "bash"
+              timeout-minutes: 40
+            - run: "mkdir -p release && npm pack --ignore-scripts --pack-destination release"
+              name: "Run mkdir -p release && npm pack --ignore-scripts --pack-destination release"
+              shell: "bash"
+              timeout-minutes: 40
+            - uses: "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02" # v4.6.2
+              with:
+                  name: "verified-package"
+                  path: "release/*.tgz"
+                  retention-days: 7
+              name: "Run actions/upload-artifact"
+        name: "Verify package"
+    publish:
+        needs: "verify"
+        runs-on: "ubuntu-latest"
+        environment: "npm"
+        permissions:
+            contents: "write"
+            id-token: "write"
+        steps:
+            - uses: "actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0" # v7.0.0
+              name: "Run actions/checkout"
+            - uses: "actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e" # v6.4.0
+              with:
+                  node-version-file: ".node-version"
+                  registry-url: "https://registry.npmjs.org"
+              name: "Run actions/setup-node"
+            - run: "npm install --global --ignore-scripts npm@12.0.2"
+              name: "Run npm install --global --ignore-scripts npm@12.0.2"
+              shell: "bash"
+              timeout-minutes: 40
+            - name: "Download verified package"
+              env:
+                  GH_TOKEN: "${{ github.token }}"
+              run: "gh run download ${{ github.run_id }} --name verified-package --dir release"
+              shell: "bash"
+              timeout-minutes: 40
+            - name: "Publish verified tarball with provenance"
+              run: "npm publish release/*.tgz --access public --provenance --ignore-scripts"
+              shell: "bash"
+              timeout-minutes: 40
+            - name: "Create GitHub release"
+              env:
+                  GH_TOKEN: "${{ github.token }}"
+              run: |
+                  version=$(node -p "require('./package.json').version")
+                  gh release create "v$version" release/*.tgz --target "$GITHUB_SHA" --generate-notes
+              shell: "bash"
+              timeout-minutes: 40
+        name: "Publish"
+        timeout-minutes: 60
+run-name: "Release • ${{ github.ref_name }}"
