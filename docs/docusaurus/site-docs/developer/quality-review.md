@@ -35,6 +35,8 @@ Terminal frames advance when files are observed, with complete lines and no anim
 
 ## Release gates
 
+The main branch requires all three operating-system test jobs, the combined quality/documentation/package job, and CodeQL analysis before merging. Dependabot updates to CodeQL actions are grouped so `init` and `analyze` stay on the same release. Manual CI and CodeQL triggers allow validation of commits created by automation that cannot trigger a new push workflow with `GITHUB_TOKEN`.
+
 `npm run release:verify` checks source types, all shared-config linters, runtime coverage, malformed documentation images, generated content, the documentation application and public API, package exports, and clean package consumers. CI also runs coverage on Linux, Windows, and macOS, then separately verifies Node 22.0.0 consumers. Each runtime coverage threshold remains 90%.
 
 Consumer checks install the packed artifact with exact Stylelint 16.0.0, current 16.x, exact 17.14.0, and current 17.x. Both ESM and CommonJS entrypoints and all seven preset subpaths are exercised. Legacy TypeScript resolution is tested with Stylelint 16; Stylelint 17 exposes its own types only through modern package exports. CommonJS with Stylelint 17 requires Node 22.12 or newer because of Stylelint's ESM loading requirements.
