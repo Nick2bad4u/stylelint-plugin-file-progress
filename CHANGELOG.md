@@ -48,6 +48,10 @@
 
 ### 📝 Documentation
 
+- [`5d78fe9`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/5d78fe9f317a7f6ffc7d2aba7fdcda2018f35d0f "Diff: 1 file, +2 | -2") — 📝 [docs] Correct first-contribution links in the release history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+2,&nbsp;-2)</em></sub>
+
+- [`73fe4e4`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/73fe4e415e69df5f528c2f12f93f9a9fe7e5ca36 "Diff: 1 file, +14 | -0") — 📝 [docs] Include validated action updates in the 1.0.0 history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+14,&nbsp;-0)</em></sub>
+
 - [`8561b50`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/8561b50e4f2aa329f7dd4aa73868d2466d1ffcff "Diff: 1 file, +7 | -2") — 📝 [docs] Include npm tarball publication handling in the release history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+7,&nbsp;-2)</em></sub>
 
 - [`8634f0d`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/8634f0db62acbed07e3e3a68800c411b410ae0c4 "Diff: 1 file, +7 | -0") — 📝 [docs] Record the inspector asset correction in the release history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+7,&nbsp;-0)</em></sub>
@@ -63,6 +67,10 @@
 - [`fdf19f0`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/fdf19f01f0317daa587354098474eac204d6a05d "Diff: 1 file, +1 | -1") — 🎨 [style] Order the documented runtime-boundary lint overrides&nbsp;<sub><em>(1&nbsp;file,&nbsp;+1,&nbsp;-1)</em></sub>
 
 ### 🧪 Testing
+
+- [`6f006a7`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/6f006a7e519bca0b74aab3008da315700247696a "Diff: 5 files, +39 | -4") — 🧪 [test] Keep tarball publication checks in a portable repository command&nbsp;<sub><em>(5&nbsp;files,&nbsp;+39,&nbsp;-4)</em></sub>
+  - 🧪 [test] Validate exactly one tarball through npm run release:check-tarball without shell glob expansion or publication.
+  - 📝 [docs] Fix nested changelog entries and document the reusable dry-run command.
 
 - [`aa72f46`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/aa72f46f8ca768263d24c2aff95ff355dc64aa4d "Diff: 1 file, +67 | -7") — 🧪 [test] Isolate CLI assertions from inherited debugger instrumentation&nbsp;<sub><em>(1&nbsp;file,&nbsp;+67,&nbsp;-7)</em></sub>
 
@@ -95,15 +103,15 @@
 
 - [`4f92add`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/4f92addb15d9064016bfc2fad5040179bd9b1692 "Diff: 4 files, +14 | -14") — 👷 [ci] Integrate validated action updates into the release fix&nbsp;<sub><em>(4&nbsp;files,&nbsp;+14,&nbsp;-14)</em></sub>
   - origin/main:
-    - ⬆️ [build] Update step-security/harden-runner
-    - ⬆️ [build] Update actions/checkout
+    ⬆️ [build] Update step-security/harden-runner
+    ⬆️ [build] Update actions/checkout
 
 - [`71e68fe`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/71e68fe7943d8518643e7cead3ae49d7a21ad3b9 "Diff: 4 files, +7 | -7") — ⬆️ [build] Update step-security/harden-runner&nbsp;<sub><em>(4&nbsp;files,&nbsp;+7,&nbsp;-7)</em></sub>
 
 ### New Contributors
 
-- @dependabot[bot] made their first contribution in [#2](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/2)
-- @Nick2bad4u made their first contribution in [#1](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/1)
+- @dependabot[bot] made their first contribution in [#8](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/8)
+- @Nick2bad4u made their first contribution in [#9](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/9)
 
 ## ⭐ Contributors
 
