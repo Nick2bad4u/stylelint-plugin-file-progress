@@ -25,7 +25,6 @@
             "url": "https://github.com/Nick2bad4u"
         }
     ],
-    "type": "commonjs",
     "main": "docusaurus.config.ts",
     "scripts": {
         "docs:api": "typedoc --options typedoc.config.json",
