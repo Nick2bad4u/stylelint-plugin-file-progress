@@ -22,6 +22,11 @@
 
 ### 🛠️ Bug Fixes
 
+- [`5389572`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/5389572fb77d52cb6469924b899d0bb7bd07c93a "Diff: 4 files, +32 | -1") — 🐛 [fix] Resolve inspector icons under the deployed Pages path&nbsp;<sub><em>(4&nbsp;files,&nbsp;+32,&nbsp;-1)</em></sub>
+  - 🐛 [fix] Correct the Stylelint inspector 2.3.5 hydrated icon links after its static build.
+  - 🧪 [test] Verify the icon assets exist and reject root-relative icon links in documentation checks.
+  - 📝 [docs] Record the scoped upstream compatibility correction and its removal condition.
+
 - [`93a8243`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/93a82431c9d9fbd7a2eb250e326b0bd5afad252a "Diff: 7 files, +95 | -10") — 🐛 [fix] Share process state and harden terminal and workflow boundaries&nbsp;<sub><em>(7&nbsp;files,&nbsp;+95,&nbsp;-10)</em></sub>
 
 - [`9092a94`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/9092a943813d35b4aab08c201ab130636c7b7981 "Diff: 7 files, +63 | -8") — 🐛 [fix] Expose CommonJS option types and verify clean TypeScript consumers&nbsp;<sub><em>(7&nbsp;files,&nbsp;+63,&nbsp;-8)</em></sub>
@@ -38,6 +43,8 @@
 - [`7219cb4`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/7219cb46452644b06820c450ee1acc261b27ee51 "Diff: 3 files, +55 | -11") — 🐛 [fix] Bootstrap npm before cache restoration in Actions&nbsp;<sub><em>(3&nbsp;files,&nbsp;+55,&nbsp;-11)</em></sub>
 
 ### 📝 Documentation
+
+- [`f4b32f4`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/f4b32f4600413c7cc0325c0ee12ec7dac6c8763a "Diff: 1 file, +15 | -1") — 📝 [docs] Include the final CI safeguards in the 1.0.0 history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+15,&nbsp;-1)</em></sub>
 
 - [`e126e44`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/e126e444f3af98828dda0673d37d8adb961a5ac6 "Diff: 1 file, +8 | -0") — 📝 [docs] Include release recovery in the 1.0.0 changelog&nbsp;<sub><em>(1&nbsp;file,&nbsp;+8,&nbsp;-0)</em></sub>
 
