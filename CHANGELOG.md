@@ -22,6 +22,10 @@
 
 ### 🛠️ Bug Fixes
 
+- [`f82d8ed`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/f82d8ed6e7107868123e2d364b9ef0d1e6b14412 "Diff: 2 files, +8 | -1") — 🐛 [fix] Publish the verified tarball as an explicit local npm path&nbsp;<sub><em>(2&nbsp;files,&nbsp;+8,&nbsp;-1)</em></sub>
+  - 🐛 [fix] Prefix the tarball argument with ./ so npm 12 does not parse it as GitHub shorthand.
+  - 🧪 [test] Dry-run the packed artifact before publication and retain required provenance in the publishing job.
+
 - [`5389572`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/5389572fb77d52cb6469924b899d0bb7bd07c93a "Diff: 4 files, +32 | -1") — 🐛 [fix] Resolve inspector icons under the deployed Pages path&nbsp;<sub><em>(4&nbsp;files,&nbsp;+32,&nbsp;-1)</em></sub>
   - 🐛 [fix] Correct the Stylelint inspector 2.3.5 hydrated icon links after its static build.
   - 🧪 [test] Verify the icon assets exist and reject root-relative icon links in documentation checks.
@@ -43,6 +47,8 @@
 - [`7219cb4`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/7219cb46452644b06820c450ee1acc261b27ee51 "Diff: 3 files, +55 | -11") — 🐛 [fix] Bootstrap npm before cache restoration in Actions&nbsp;<sub><em>(3&nbsp;files,&nbsp;+55,&nbsp;-11)</em></sub>
 
 ### 📝 Documentation
+
+- [`8634f0d`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/8634f0db62acbed07e3e3a68800c411b410ae0c4 "Diff: 1 file, +7 | -0") — 📝 [docs] Record the inspector asset correction in the release history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+7,&nbsp;-0)</em></sub>
 
 - [`f4b32f4`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/f4b32f4600413c7cc0325c0ee12ec7dac6c8763a "Diff: 1 file, +15 | -1") — 📝 [docs] Include the final CI safeguards in the 1.0.0 history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+15,&nbsp;-1)</em></sub>
 
@@ -83,8 +89,7 @@
 
 ### New Contributors
 
-- @dependabot[bot] made their first contribution in [#3](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/3)
-- @Nick2bad4u made their first contribution in [#1](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/1)
+- @Nick2bad4u made their first contribution in [#9](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/9)
 
 ## ⭐ Contributors
 
