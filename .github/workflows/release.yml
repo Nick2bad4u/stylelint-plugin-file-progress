@@ -149,6 +149,8 @@ jobs:
                   version=$(node -p "require('./package.json').version")
                   if gh release view "v$version" >/dev/null 2>&1; then
                       gh release upload "v$version" release/*.tgz --clobber
+                      # An interrupted asset upload can leave a draft behind.
+                      gh release edit "v$version" --draft=false --target "$GITHUB_SHA" --notes-file CHANGELOG.md --title "v$version"
                   else
                       gh release create "v$version" release/*.tgz --target "$GITHUB_SHA" --notes-file CHANGELOG.md --title "v$version"
                   fi
