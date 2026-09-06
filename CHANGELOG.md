@@ -39,6 +39,8 @@
 
 ### 📝 Documentation
 
+- [`e126e44`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/e126e444f3af98828dda0673d37d8adb961a5ac6 "Diff: 1 file, +8 | -0") — 📝 [docs] Include release recovery in the 1.0.0 changelog&nbsp;<sub><em>(1&nbsp;file,&nbsp;+8,&nbsp;-0)</em></sub>
+
 - [`dca91cb`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/dca91cb03e3c0df4b554941bd748a93b0f0987ae "Diff: 1 file, +62 | -4") — 📝 [docs] Record the complete 1.0.0 release history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+62,&nbsp;-4)</em></sub>
 
 ### 🎨 Styling
@@ -59,11 +61,23 @@
 
 ### 👷 CI/CD
 
+- [`2872fb6`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/2872fb6e67139a3f9d085cc67e12787af603d3d6 "Diff: 4 files, +8 | -1") — 👷 [ci] Keep CodeQL updates compatible and require passing merge checks&nbsp;<sub><em>(4&nbsp;files,&nbsp;+8,&nbsp;-1)</em></sub>
+  - 👷 [ci] Align CodeQL init and analyze at v4.37.9 and group future CodeQL updates in Dependabot.
+  - 👷 [ci] Add manual CI and CodeQL triggers for automation-created commits.
+  - 📝 [docs] Record the enforced main-branch checks and automatic merge safeguards.
+
 - [`4a26a57`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/4a26a5770e18963eb6cff8aee255f55dabf82d29 "Diff: 1 file, +2 | -0") — 👷 [ci] Finish draft releases when retrying interrupted uploads&nbsp;<sub><em>(1&nbsp;file,&nbsp;+2,&nbsp;-0)</em></sub>
+
+### 📦 Dependencies
+
+- [`a16e7cc`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/a16e7ccc7764307d078df43457e9d493716b10ba "Diff: 1 file, +1 | -1") — ⬆️ [build] Update github/codeql-action/init&nbsp;<sub><em>(1&nbsp;file,&nbsp;+1,&nbsp;-1)</em></sub>
+
+- [`22b2ad1`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/22b2ad1797c5bb7dc3971697a48055fce563e747 "Diff: 1 file, +1 | -1") — ⬆️ [build] Update actions/deploy-pages&nbsp;<sub><em>(1&nbsp;file,&nbsp;+1,&nbsp;-1)</em></sub>
 
 ### New Contributors
 
-- @Nick2bad4u made their first contribution
+- @dependabot[bot] made their first contribution in [#3](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/3)
+- @Nick2bad4u made their first contribution in [#1](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/1)
 
 ## ⭐ Contributors
 
