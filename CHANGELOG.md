@@ -48,6 +48,8 @@
 
 ### 📝 Documentation
 
+- [`8561b50`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/8561b50e4f2aa329f7dd4aa73868d2466d1ffcff "Diff: 1 file, +7 | -2") — 📝 [docs] Include npm tarball publication handling in the release history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+7,&nbsp;-2)</em></sub>
+
 - [`8634f0d`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/8634f0db62acbed07e3e3a68800c411b410ae0c4 "Diff: 1 file, +7 | -0") — 📝 [docs] Record the inspector asset correction in the release history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+7,&nbsp;-0)</em></sub>
 
 - [`f4b32f4`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/f4b32f4600413c7cc0325c0ee12ec7dac6c8763a "Diff: 1 file, +15 | -1") — 📝 [docs] Include the final CI safeguards in the 1.0.0 history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+15,&nbsp;-1)</em></sub>
@@ -83,12 +85,24 @@
 
 ### 📦 Dependencies
 
+- [`1349377`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/134937724df0c3afeadf182a29d8d67f50b78769 "Diff: 4 files, +7 | -7") — ⬆️ [build] Update actions/checkout&nbsp;<sub><em>(4&nbsp;files,&nbsp;+7,&nbsp;-7)</em></sub>
+
 - [`a16e7cc`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/a16e7ccc7764307d078df43457e9d493716b10ba "Diff: 1 file, +1 | -1") — ⬆️ [build] Update github/codeql-action/init&nbsp;<sub><em>(1&nbsp;file,&nbsp;+1,&nbsp;-1)</em></sub>
 
 - [`22b2ad1`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/22b2ad1797c5bb7dc3971697a48055fce563e747 "Diff: 1 file, +1 | -1") — ⬆️ [build] Update actions/deploy-pages&nbsp;<sub><em>(1&nbsp;file,&nbsp;+1,&nbsp;-1)</em></sub>
 
+### 🛡️ Security
+
+- [`4f92add`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/4f92addb15d9064016bfc2fad5040179bd9b1692 "Diff: 4 files, +14 | -14") — 👷 [ci] Integrate validated action updates into the release fix&nbsp;<sub><em>(4&nbsp;files,&nbsp;+14,&nbsp;-14)</em></sub>
+  - origin/main:
+    ⬆️ [build] Update step-security/harden-runner
+    ⬆️ [build] Update actions/checkout
+
+- [`71e68fe`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/71e68fe7943d8518643e7cead3ae49d7a21ad3b9 "Diff: 4 files, +7 | -7") — ⬆️ [build] Update step-security/harden-runner&nbsp;<sub><em>(4&nbsp;files,&nbsp;+7,&nbsp;-7)</em></sub>
+
 ### New Contributors
 
+- @dependabot[bot] made their first contribution in [#8](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/8)
 - @Nick2bad4u made their first contribution in [#9](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/9)
 
 ## ⭐ Contributors
