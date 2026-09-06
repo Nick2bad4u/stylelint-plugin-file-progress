@@ -1,5 +1,4 @@
 import type { Config, Plugin, Rule } from "stylelint";
-import type { ArrayValues } from "type-fest";
 
 import type { ProgressSettings } from "./types.js";
 
@@ -29,7 +28,7 @@ export const configNames = [
 /** A Stylelint config with the progress plugin enabled. */
 export type FileProgressConfig = Config;
 /** Public preset names. */
-export type FileProgressConfigName = ArrayValues<typeof configNames>;
+export type FileProgressConfigName = (typeof configNames)[number];
 
 // eslint-disable-next-line n/no-process-env -- CI-aware presets intentionally resolve the standard CI environment flag.
 const isCi = process.env.CI === "true";

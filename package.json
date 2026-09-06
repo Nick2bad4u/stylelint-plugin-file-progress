@@ -228,7 +228,6 @@
         "stylelint-config-nick2bad4u": "^2.2.1",
         "stylelint-define-config": "^17.14.0",
         "tsdoc-config-nick2bad4u": "^1.0.6",
-        "type-fest": "^5.9.0",
         "typedoc": "^0.28.20",
         "typedoc-config-nick2bad4u": "^2.1.0",
         "typescript": "^6.0.3",

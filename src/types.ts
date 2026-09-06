@@ -1,8 +1,6 @@
-import type { Except } from "type-fest";
-
 /** Fully resolved display settings. */
 export type NormalizedProgressSettings = Required<
-    Except<ProgressSettings, "hideDirectoryNames">
+    Omit<ProgressSettings, "hideDirectoryNames">
 >;
 /** Writable stream for progress output. */
 export type OutputStream = "stderr" | "stdout";

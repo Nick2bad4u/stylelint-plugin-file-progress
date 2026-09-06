@@ -88,6 +88,7 @@ try {
                 "--no-fund",
                 tarball,
                 `stylelint@${version}`,
+                "@types/node@22",
             ],
             consumer
         );
@@ -98,6 +99,57 @@ try {
                     .filter((key) => key.startsWith("./configs/"))
                     .map((key) => key.slice(10))
             )}){const esm=await import('stylelint-plugin-file-progress/configs/'+name);const common=require('stylelint-plugin-file-progress/configs/'+name);for(const config of [esm.default,common,configs[name]]){const r=await stylelint.lint({code:'a { color: red; }',config:{...config,rules:{...config.rules,'file-progress/activate':[true,{hide:true}]}}});assert.equal(r.errored,false);}}\nconsole.log('Verified '+require('stylelint/package.json').version);\n`
+        );
+        const presetNames = Object.keys(manifest.exports)
+            .filter((key) => key.startsWith("./configs/"))
+            .map((key) => key.slice(10));
+        for (const kind of ["mts", "cts"]) {
+            const imports =
+                kind === "mts"
+                    ? "import pack from 'stylelint-plugin-file-progress';\n"
+                    : "import pack = require('stylelint-plugin-file-progress');\n";
+            const presetImports = presetNames
+                .map((name, index) =>
+                    kind === "mts"
+                        ? `import preset${index} from 'stylelint-plugin-file-progress/configs/${name}';`
+                        : `import preset${index} = require('stylelint-plugin-file-progress/configs/${name}');`
+                )
+                .join("\n");
+            const code =
+                imports +
+                presetImports +
+                `\nimport type {ProgressSettings, FileProgressConfigName, FileProgressMetadata} from 'stylelint-plugin-file-progress';
+const options: ProgressSettings = {mode: 'file', outputStream: 'stderr', spinnerStyle: 'dots'};
+const name: FileProgressConfigName = 'recommended';
+const metadata: FileProgressMetadata = pack.meta;
+// @ts-expect-error Invalid modes must remain a type error.
+const invalid: ProgressSettings = {mode: 'invalid'};
+// @ts-expect-error Unknown presets must remain a type error.
+const missing: FileProgressConfigName = 'missing';
+void [options, metadata, pack.configs[name], invalid, missing, ${presetNames.map((_, i) => "preset" + i).join(",")}];\n`;
+            await writeFile(path.join(consumer, `types.${kind}`), code);
+        }
+        const types = spawnSync(
+            process.execPath,
+            [
+                path.join(root, "node_modules/typescript/bin/tsc"),
+                "--noEmit",
+                "--strict",
+                "--module",
+                "nodenext",
+                "--target",
+                "es2022",
+                "types.mts",
+                "types.cts",
+            ],
+            { cwd: consumer, encoding: "utf8", timeout: 30000 }
+        );
+        if (types.status !== 0)
+            throw new Error(
+                `Consumer declarations (Stylelint ${version}): ${types.stdout || types.stderr}`
+            );
+        console.log(
+            `Verified ESM and CommonJS consumer declarations with Stylelint ${version}`
         );
         const result = spawnSync(process.execPath, ["verify.mjs"], {
             cwd: consumer,

@@ -18,6 +18,14 @@ const config = [
     },
     ...nick2bad4u.configs.all,
     {
+        files: ["src/plugin.ts", "src/types.ts"],
+        name: "Public declarations stay self-contained instead of imposing type-fest's ES2025 library globals on consumers",
+        rules: {
+            "typefest/prefer-type-fest-array-values": "off",
+            "typefest/prefer-type-fest-except": "off",
+        },
+    },
+    {
         files: ["src/_internal/controller.ts", "test/process-host.test.ts"],
         name: "Node types declare isTTY as boolean but pipe-backed process streams omit it at runtime",
         rules: {

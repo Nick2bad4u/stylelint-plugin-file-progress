@@ -32,7 +32,7 @@ await build({
 });
 await writeFile(
     path.join(dist, "plugin.d.cts"),
-    'import type plugin from "./plugin.js";\nimport type * as api from "./plugin.js";\ndeclare const entry: typeof plugin & typeof api;\nexport = entry;\n'
+    'import type plugin from "./plugin.js";\nimport type * as api from "./plugin.js";\ndeclare const entry: typeof plugin & typeof api;\ndeclare namespace entry {\n    export type FileProgressConfig = api.FileProgressConfig;\n    export type FileProgressConfigName = api.FileProgressConfigName;\n    export type FileProgressMetadata = api.FileProgressMetadata;\n    export type FileProgressPlugin = api.FileProgressPlugin;\n    export type OutputStream = api.OutputStream;\n    export type ProgressMode = api.ProgressMode;\n    export type ProgressPathFormat = api.ProgressPathFormat;\n    export type ProgressRuleOptions = api.ProgressRuleOptions;\n    export type ProgressSettings = api.ProgressSettings;\n    export type SpinnerStyle = api.SpinnerStyle;\n}\nexport = entry;\n'
 );
 const manifest = JSON.parse(
     await readFile(path.join(root, "package.json"), "utf8")
