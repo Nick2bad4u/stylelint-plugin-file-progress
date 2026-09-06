@@ -6,6 +6,8 @@ import * as path from "node:path";
 import { pathToFileURL } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 
+type Environment = Record<string, string | undefined>;
+
 describe("command-line integration", () => {
     const folders: string[] = [];
 
@@ -16,6 +18,27 @@ describe("command-line integration", () => {
     });
 
     const entry = path.resolve("dist/plugin.js").replaceAll("\\", "/");
+
+    function cliEnvironment(
+        overrides: Readonly<Environment> = {},
+        // eslint-disable-next-line n/no-process-env -- Subprocesses retain the caller's environment except external Node instrumentation.
+        inherited: Readonly<Environment> = process.env
+    ): Environment {
+        // Debugger preloads and inspector flags produce their own stderr before
+        // the plugin loads. Output assertions require an uninstrumented child.
+        return {
+            ...Object.fromEntries(
+                Object.entries(inherited).filter(
+                    ([name]) =>
+                        name.toUpperCase() !== "NODE_OPTIONS" &&
+                        name.toUpperCase() !== "VSCODE_INSPECTOR_OPTIONS"
+                )
+            ),
+            FORCE_COLOR: "0",
+            NO_COLOR: "1",
+            ...overrides,
+        };
+    }
 
     function fixture(
         options: Record<string, unknown> = {},
@@ -71,13 +94,51 @@ describe("command-line integration", () => {
             {
                 cwd: folder,
                 encoding: "utf8",
-                // eslint-disable-next-line n/no-process-env -- The real CLI inherits the caller environment with color disabled for assertions.
-                env: { ...process.env, FORCE_COLOR: "0", NO_COLOR: "1" },
+                env: cliEnvironment(),
                 input,
                 timeout: 20_000,
             }
         );
     }
+
+    it("isolates debugger preloads without changing the inherited environment or CI overrides", () => {
+        expect.hasAssertions();
+
+        const folder = fixture();
+        const preload = path.join(folder, "debugger.cjs");
+        writeFileSync(
+            preload,
+            String.raw`process.stderr.write('injected debugger\n');`
+        );
+        const inherited = {
+            ...cliEnvironment(),
+            CI: "true",
+            NODE_OPTIONS: `--require ${JSON.stringify(preload.replaceAll("\\", "/"))}`,
+            VSCODE_INSPECTOR_OPTIONS: "debugger fixture",
+        };
+        const args = [
+            "-e",
+            "console.log(JSON.stringify({ci:process.env.CI,nodeOptions:process.env.NODE_OPTIONS,inspector:process.env.VSCODE_INSPECTOR_OPTIONS}));",
+        ];
+        const instrumented = spawnSync(process.execPath, args, {
+            encoding: "utf8",
+            env: inherited,
+            timeout: 20_000,
+        });
+        const isolated = spawnSync(process.execPath, args, {
+            encoding: "utf8",
+            env: cliEnvironment({ CI: "false" }, inherited),
+            timeout: 20_000,
+        });
+
+        expect(instrumented.status).toBe(0);
+        expect(instrumented.stderr).toBe("injected debugger\n");
+        expect(isolated.status).toBe(0);
+        expect(isolated.stderr).toBe("");
+        expect(JSON.parse(isolated.stdout)).toStrictEqual({ ci: "false" });
+        expect(inherited.NODE_OPTIONS).toContain("--require");
+        expect(inherited.VSCODE_INSPECTOR_OPTIONS).toBe("debugger fixture");
+    });
 
     it("keeps stdout and JSON report files intact and emits one process summary after two files", () => {
         expect.hasAssertions();
@@ -168,8 +229,7 @@ describe("command-line integration", () => {
             ],
             {
                 encoding: "utf8",
-                // eslint-disable-next-line n/no-process-env -- Presets are resolved at import time in an isolated process.
-                env: { ...process.env, CI: ci },
+                env: cliEnvironment({ CI: ci }),
                 timeout: 20_000,
             }
         );
@@ -206,7 +266,7 @@ describe("command-line integration", () => {
                 "-e",
                 program,
             ],
-            { encoding: "utf8", timeout: 20_000 }
+            { encoding: "utf8", env: cliEnvironment(), timeout: 20_000 }
         );
 
         expect(result.status).toBe(0);
@@ -231,7 +291,7 @@ describe("command-line integration", () => {
                 "-e",
                 program,
             ],
-            { encoding: "utf8", timeout: 20_000 }
+            { encoding: "utf8", env: cliEnvironment(), timeout: 20_000 }
         );
 
         expect(result.status).toBe(0);
@@ -328,7 +388,7 @@ describe("command-line integration", () => {
                 "-e",
                 `const before=process.listenerCount('exit'); await import(${JSON.stringify(pathToFileURL(entry).href)}); const module=await import('node:module'); const require=module.createRequire(import.meta.url); require(${JSON.stringify(path.resolve("dist/plugin.cjs"))}); if(process.listenerCount('exit')!==before)throw Error('import registered exit hook');`,
             ],
-            { encoding: "utf8", timeout: 20_000 }
+            { encoding: "utf8", env: cliEnvironment(), timeout: 20_000 }
         );
 
         expect(result.status).toBe(0);
