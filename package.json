@@ -170,6 +170,7 @@
         "prepack": "npm run build",
         "prepublishOnly": "npm run release:verify",
         "release:check": "npm run release:verify",
+        "release:check-tarball": "node scripts/check-release-tarball.mjs",
         "release:verify": "npm run build && npm run typecheck && npm run lint:all && npm run test:coverage && npm run test:docs-images && npm run sync:rules:check && npm run docs:demos:check && npm run docs:typecheck && npm run docs:build && npm run docs:check-links && npm run lint:package-check && npm run test:compat",
         "presync:configs-rules-matrix": "npm run build",
         "sync:configs-rules-matrix": "node scripts/sync.mjs",
