@@ -211,6 +211,76 @@ describe("command-line integration", () => {
         expect(result.stderr).not.toContain("0 warnings");
     });
 
+    it.each([80, 160])(
+        "preserves the colored string formatter byte-for-byte at %s terminal columns",
+        (columns) => {
+            expect.hasAssertions();
+
+            const folder = fixture({ detailedSuccess: false }, true, "warning");
+            writeFileSync(
+                path.join(folder, "a.css"),
+                "a { color: #123456789abcdef; }\n"
+            );
+            const preload = path.join(folder, "terminal.mjs");
+            writeFileSync(
+                preload,
+                `Object.defineProperties(process.stdout, { isTTY: { value: true }, columns: { value: ${columns}, writable: true } });
+Object.defineProperty(process.stderr, 'isTTY', { value: true });
+const stdoutWrite = process.stdout.write, stderrWrite = process.stderr.write;
+process.on('exit', () => {
+    if (process.stdout.columns !== ${columns} || process.stdout.write !== stdoutWrite || process.stderr.write !== stderrWrite) throw Error('Terminal state changed');
+});`
+            );
+            const coloredEnvironment = cliEnvironment({ FORCE_COLOR: "1" });
+            Reflect.deleteProperty(coloredEnvironment, "NO_COLOR");
+            const execute = () =>
+                spawnSync(
+                    process.execPath,
+                    [
+                        "--import",
+                        pathToFileURL(preload).href,
+                        path.resolve(
+                            "node_modules/stylelint/bin/stylelint.mjs"
+                        ),
+                        "--config",
+                        path.join(folder, "config.json"),
+                        "a.css",
+                        "--max-warnings",
+                        "0",
+                        "--color",
+                    ],
+                    {
+                        cwd: folder,
+                        encoding: "utf8",
+                        env: coloredEnvironment,
+                        timeout: 20_000,
+                    }
+                );
+            const withPlugin = execute();
+            const configPath = path.join(folder, "config.json");
+            const config: { rules: Record<string, unknown> } = JSON.parse(
+                readFileSync(configPath, "utf8")
+            );
+            config.rules["file-progress/activate"] = null;
+            writeFileSync(configPath, JSON.stringify(config));
+            const plain = execute();
+
+            expect(plain.status).toBe(2);
+            expect(withPlugin.status).toBe(plain.status);
+            expect(withPlugin.stdout).toBe(plain.stdout);
+            expect(plain.stderr).toContain("\u{1B}[33m");
+            expect(plain.stderr).toContain("Max warnings exceeded:");
+            expect(withPlugin.stderr).toContain(plain.stderr);
+            expect(withPlugin.stderr).toContain("\u{1B}[36mSFP");
+            expect(
+                withPlugin.stderr.match(/Process exited with status 2\./gv)
+            ).toHaveLength(1);
+            expect(withPlugin.stderr.indexOf(plain.stderr)).toBeLessThan(
+                withPlugin.stderr.indexOf("Process exited with status 2.")
+            );
+        }
+    );
+
     it.each([
         "true",
         "false",

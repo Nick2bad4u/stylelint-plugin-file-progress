@@ -1,4 +1,5 @@
 import { writeSync } from "node:fs";
+import { platform } from "node:os";
 import { performance } from "node:perf_hooks";
 import { isMainThread } from "node:worker_threads";
 import pc from "picocolors";
@@ -172,20 +173,20 @@ export class ProgressController {
     }
 }
 
-const workerWrites: Record<OutputStream, number> = { stderr: 0, stdout: 0 };
-const onWorkerOutputError = (): void => {
+const streamWrites: Record<OutputStream, number> = { stderr: 0, stdout: 0 };
+const onStreamOutputError = (): void => {
     /* Output is best effort. */
 };
 
-/** Keep one temporary error listener even when a worker buffers many files. */
-function writeWorkerOutput(stream: OutputStream, text: string): void {
+/** Keep one temporary error listener while stream writes are pending. */
+function writeStreamOutput(stream: OutputStream, text: string): void {
     const output = process[stream];
-    if (workerWrites[stream] === 0) output.on("error", onWorkerOutputError);
-    workerWrites[stream] += 1;
+    if (streamWrites[stream] === 0) output.on("error", onStreamOutputError);
+    streamWrites[stream] += 1;
     const complete = (): void => {
-        workerWrites[stream] -= 1;
-        if (workerWrites[stream] === 0)
-            output.removeListener("error", onWorkerOutputError);
+        streamWrites[stream] -= 1;
+        if (streamWrites[stream] === 0)
+            output.removeListener("error", onStreamOutputError);
     };
     try {
         output.write(text, () => {
@@ -197,8 +198,7 @@ function writeWorkerOutput(stream: OutputStream, text: string): void {
 }
 
 /**
- * Real process boundary with descriptor writes on the main thread and
- * worker-aware streams.
+ * Real process boundary preserving Windows console encoding and worker capture.
  */
 export const processHost: ProgressHost = {
     color: (stream) => pc.isColorSupported && Boolean(process[stream].isTTY),
@@ -218,9 +218,14 @@ export const processHost: ProgressHost = {
     write: (stream, text) => {
         // Progress must not crash linting when a downstream pipe closes.
 
-        if (!isMainThread) {
+        if (
+            !isMainThread ||
+            (platform() === "win32" && process[stream].isTTY)
+        ) {
             // Worker streams use message ports; numeric descriptors bypass captured output.
-            writeWorkerOutput(stream, text);
+            // Windows terminals need Node's Unicode and ANSI console handling;
+            // raw descriptor writes use the console code page and corrupt UTF-8.
+            writeStreamOutput(stream, text);
             return;
         }
         try {
