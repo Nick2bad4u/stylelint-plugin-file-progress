@@ -128,14 +128,14 @@ const config = {
                             to: "/compatibility",
                         },
                         {
-                            href: "pathname:///eslint-inspector/",
                             label: "ESLint inspector",
                             target: "_self",
+                            to: "pathname:///eslint-inspector/",
                         },
                         {
-                            href: "pathname:///stylelint-inspector/",
                             label: "Stylelint inspector",
                             target: "_self",
+                            to: "pathname:///stylelint-inspector/",
                         },
                     ],
                     title: "🛠 Development",

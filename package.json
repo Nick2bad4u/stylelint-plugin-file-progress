@@ -222,10 +222,10 @@
         "test:coverage:ci": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=test-report.junit.xml",
         "test:docs-images": "node scripts/check-docs-images.mjs",
         "typecheck": "tsc --noEmit -p tsconfig.json",
-        "update:dependencies": "ncu --configFilePath node_modules/ncu-config-nick2bad4u --configFileName .ncurc.json",
+        "update:dependencies": "ncu --configFilePath node_modules/ncu-config-nick2bad4u --configFileName .ncurc.json --dep prod,dev,optional",
         "update-actions": "actions-up --yes --style sha --quiet",
         "update-all": "npm run update-actions && npm run update-deps",
-        "update-deps": "npm run update:dependencies && npm update && npm run sync:node-version-files && npm run sync:npm-version"
+        "update-deps": "npm run update:dependencies && node scripts/sync-node-version-files.mjs && node scripts/sync-npm-version.mjs && npm update --package-lock-only --ignore-scripts"
     },
     "overrides": {
         "@docusaurus/mdx-loader": {
@@ -272,6 +272,7 @@
         "remark-config-nick2bad4u": "^1.1.4",
         "secretlint": "^13.0.5",
         "secretlint-config-nick2bad4u": "^1.1.2",
+        "semver": "^7.8.5",
         "sort-package-json": "^4.0.0",
         "stylelint": "^17.15.0",
         "stylelint-config-inspector": "^2.3.7",

@@ -10,13 +10,15 @@
  *
  * Managed value:
  *
- * - `devEngines.packageManager.version`, as the same exact version.
+ * - Root and workspace `devEngines.packageManager.version`, as the same exact
+ *   version.
+ * - Workspace `packageManager` pins, using the root pin as the source of truth.
  *
  * The exact package-manager pin gives automation a reproducible npm release,
  * and the development-engine pin keeps local installs on that release.
  */
 
-import { readFile, writeFile } from "node:fs/promises";
+import { glob, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const packageJsonPath = fileURLToPath(
@@ -109,11 +111,13 @@ const parseArguments = (argumentList) => {
 /**
  * Read and parse package.json.
  *
+ * @param {string} [manifestPath]
+ *
  * @returns {Promise<Record<string, unknown>>}
  */
-const readPackageJson = async () => {
+const readPackageJson = async (manifestPath = packageJsonPath) => {
     try {
-        const packageJsonContent = await readFile(packageJsonPath, "utf8");
+        const packageJsonContent = await readFile(manifestPath, "utf8");
         const packageJson = JSON.parse(packageJsonContent);
 
         if (!isRecord(packageJson)) {
@@ -125,7 +129,7 @@ const readPackageJson = async () => {
         const message = error instanceof Error ? error.message : String(error);
 
         throw new TypeError(
-            `Failed to read package.json at ${packageJsonPath}: ${message}`,
+            `Failed to read package.json at ${manifestPath}: ${message}`,
             { cause: error }
         );
     }
@@ -186,34 +190,64 @@ const main = async () => {
         return;
     }
 
-    const currentEngineRange = packageManagerEngine["version"];
-
-    if (currentEngineRange === expectedEngineRange) {
-        console.log(
-            `npm package-manager metadata is synchronized: ${packageManagerSpec} (${expectedEngineRange})`
-        );
-        return;
-    }
-
-    if (mode === "check") {
+    const workspaces = packageJson["workspaces"] ?? [];
+    if (
+        !Array.isArray(workspaces) ||
+        workspaces.some((workspace) => typeof workspace !== "string")
+    ) {
         throw new TypeError(
-            [
-                "npm package-manager metadata is out of sync.",
-                `Expected devEngines.packageManager.version=${expectedEngineRange}.`,
-                `Actual: ${String(currentEngineRange)}.`,
-                "Run npm run sync:npm-version to repair it.",
-            ].join(" ")
+            "Expected package.json workspaces to be an array of directory patterns."
         );
     }
-
-    packageManagerEngine["version"] = expectedEngineRange;
-    await writeFile(
-        packageJsonPath,
-        `${JSON.stringify(packageJson, null, 4)}\n`,
-        "utf8"
+    const rootPath = fileURLToPath(new URL("../", import.meta.url));
+    const manifests = [
+        {
+            path: packageJsonPath,
+            value: packageJson,
+            engine: packageManagerEngine,
+        },
+    ];
+    for (const workspace of workspaces) {
+        const matches = [];
+        for await (const path of glob(`${workspace}/package.json`, {
+            cwd: rootPath,
+            exclude: ["**/node_modules/**"],
+        })) {
+            matches.push(
+                fileURLToPath(
+                    new URL(
+                        path.replaceAll("\\", "/"),
+                        new URL("../", import.meta.url)
+                    )
+                )
+            );
+        }
+        if (matches.length === 0)
+            throw new Error(`Workspace manifest not found: ${workspace}`);
+        for (const path of matches) {
+            const value = await readPackageJson(path);
+            const { packageManagerEngine: engine } =
+                resolvePackageManagerMetadata(value);
+            manifests.push({ path, value, engine });
+        }
+    }
+    const changes = manifests.filter(
+        ({ value, engine }) =>
+            value["packageManager"] !== packageManagerSpec ||
+            engine["version"] !== expectedEngineRange
     );
+    if (mode === "check" && changes.length > 0) {
+        throw new TypeError(
+            `npm metadata is out of sync in ${changes.map(({ path }) => path).join(", ")}. Expected ${packageManagerSpec}; run npm run sync:npm-version.`
+        );
+    }
+    for (const { path, value, engine } of changes) {
+        value["packageManager"] = packageManagerSpec;
+        engine["version"] = expectedEngineRange;
+        await writeFile(path, `${JSON.stringify(value, null, 4)}\n`, "utf8");
+    }
     console.log(
-        `Updated devEngines.packageManager.version to ${expectedEngineRange} from ${packageManagerSpec}`
+        `npm metadata synchronized across ${manifests.length} manifests: ${packageManagerSpec}`
     );
 };
 

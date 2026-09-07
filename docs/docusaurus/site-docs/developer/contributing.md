@@ -22,9 +22,9 @@ The public API reference is generated under `site-docs/developer/api`; its edit 
 
 ## Toolchain maintenance
 
-`npm run sync:node-version-files` synchronizes `.node-version` and `.nvmrc` with the running Node version; pass `--version` to the script directly for an explicit version. Its `:check` counterpart only validates the files. `npm run sync:npm-version` keeps the exact npm development-engine version aligned with `packageManager`; its `:check` counterpart does not write.
+`npm run sync:node-version-files` synchronizes `.node-version` and `.nvmrc` with the running Node version; pass `--version` to the script directly for an explicit version. Pins must satisfy both the public Node range and the development runtime range. Its `:check` counterpart validates the stored pins without writing. `npm run sync:npm-version` synchronizes the root and workspace npm pins and development-engine versions from the root `packageManager`; its `:check` counterpart does not write.
 
-`npm run update-deps` uses the shared dependency updater and normal npm resolution, then synchronizes toolchain metadata. Resolve peer incompatibilities before installing updates. The published `vitest-config-nick2bad4u@1.0.0` supports Vitest 4, so upgrade the shared configuration before adopting Vitest 5. `npm run update-actions` retains SHA-style action references; review and verify the resulting commits before pushing.
+`npm run update-deps` prepares dependency updates with the shared updater, synchronizes toolchain metadata, and resolves a new lockfile without changing installed packages or running dependency scripts. It preserves the separately managed npm version. Review the manifest and lockfile changes, resolve peer incompatibilities, and update the version-qualified `allowScripts` entries for reviewed lifecycle dependencies before running `npm ci` and `npm run release:verify`. Keep explicit denials intact. The published `vitest-config-nick2bad4u@1.0.0` supports Vitest 4, so upgrade the shared configuration before adopting Vitest 5. `npm run update-actions` retains SHA-style action references; review and verify the resulting commits before pushing.
 
 ## Validation
 

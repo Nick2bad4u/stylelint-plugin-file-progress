@@ -20,7 +20,7 @@
     --sfp-muted: #526276;
     --sfp-shadow: 0 12px 32px rgb(23 53 68 / 7%);
 }
-[data-theme="dark"] {
+html[data-theme="dark"] {
     --ifm-color-primary: #64ded0;
     --ifm-color-primary-dark: #46d8c7;
     --ifm-color-primary-darker: #37d5c3;

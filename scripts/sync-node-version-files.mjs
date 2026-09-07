@@ -16,6 +16,7 @@
 
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { satisfies, validRange } from "semver";
 
 const packageJsonPath = fileURLToPath(
     new URL("../package.json", import.meta.url)
@@ -145,80 +146,35 @@ const readPackageJson = async () => {
 };
 
 /**
- * Extract the minimum supported Node.js version when `engines.node` uses the
- * repository's current `>=x.y.z` form.
- *
- * @param {unknown} enginesValue
- *
- * @returns {string | null}
- */
-const resolveMinimumEngineVersion = (enginesValue) => {
-    if (!isRecord(enginesValue) || typeof enginesValue["node"] !== "string") {
-        return null;
-    }
-
-    const nodeEngineRange = enginesValue["node"].trim();
-    const match = /^>=\s*(\d+\.\d+\.\d+)$/v.exec(nodeEngineRange);
-
-    return match?.[1] ?? null;
-};
-
-/**
- * Compare two exact semver versions.
- *
- * @param {string} leftVersion
- * @param {string} rightVersion
- *
- * @returns {number}
- */
-const compareExactVersions = (leftVersion, rightVersion) => {
-    const leftSegments = leftVersion.split(".").map(Number);
-    const rightSegments = rightVersion.split(".").map(Number);
-
-    for (
-        let index = 0;
-        index < Math.max(leftSegments.length, rightSegments.length);
-        index += 1
-    ) {
-        const leftSegment = leftSegments[index] ?? 0;
-        const rightSegment = rightSegments[index] ?? 0;
-
-        if (leftSegment !== rightSegment) {
-            return leftSegment - rightSegment;
-        }
-    }
-
-    return 0;
-};
-
-/**
- * Ensure the preferred version does not fall below the minimum supported
- * engine.
+ * Validate a pin against both public and development runtime requirements.
  *
  * @param {string} preferredVersion
- * @param {string | null} minimumEngineVersion
+ * @param {Record<string, unknown>} packageJson
  *
  * @returns {void}
- *
- * @throws {RangeError} If preferred version is below the minimum supported
- *   engine
  */
-const assertPreferredVersionSupported = (
-    preferredVersion,
-    minimumEngineVersion
-) => {
-    if (minimumEngineVersion === null) {
-        return;
-    }
-
-    if (compareExactVersions(preferredVersion, minimumEngineVersion) < 0) {
-        throw new RangeError(
-            [
-                "Preferred Node.js version is below package.json engines.node.",
-                `Preferred: ${preferredVersion}.`,
-                `Minimum engine: ${minimumEngineVersion}.`,
-            ].join(" ")
-        );
+const assertPreferredVersionSupported = (preferredVersion, packageJson) => {
+    const engines = packageJson["engines"];
+    const devEngines = packageJson["devEngines"];
+    const runtime = isRecord(devEngines) ? devEngines["runtime"] : undefined;
+    const ranges = [
+        ["engines.node", isRecord(engines) ? engines["node"] : undefined],
+        [
+            "devEngines.runtime.version",
+            isRecord(runtime) ? runtime["version"] : undefined,
+        ],
+    ];
+    for (const [field, range] of ranges) {
+        if (typeof range !== "string" || !validRange(range)) {
+            throw new TypeError(
+                `Expected package.json ${field} to be a valid semver range.`
+            );
+        }
+        if (!satisfies(preferredVersion, range)) {
+            throw new RangeError(
+                `Node ${preferredVersion} does not satisfy package.json ${field}: ${range}`
+            );
+        }
     }
 };
 
@@ -264,11 +220,14 @@ const writeVersionFiles = async (preferredVersion) => {
 /**
  * Validate the managed version files.
  *
- * @param {{ expectedVersion: string | null }} options
+ * @param {{
+ *     expectedVersion: string | null;
+ *     packageJson: Record<string, unknown>;
+ * }} options
  *
  * @returns {Promise<void>}
  */
-const validateVersionFiles = async ({ expectedVersion }) => {
+const validateVersionFiles = async ({ expectedVersion, packageJson }) => {
     const nodeVersionFileContent =
         await readOptionalVersionFile(nodeVersionFilePath);
     const nvmrcFileContent = await readOptionalVersionFile(nvmrcFilePath);
@@ -307,6 +266,8 @@ const validateVersionFiles = async ({ expectedVersion }) => {
         );
     }
 
+    assertPreferredVersionSupported(normalizedNodeVersionFile, packageJson);
+
     console.log(
         `Node version files are synchronized: ${normalizedNodeVersionFile}`
     );
@@ -317,21 +278,21 @@ const main = async () => {
         process.argv.slice(2)
     );
     const packageJson = await readPackageJson();
-    const minimumEngineVersion = resolveMinimumEngineVersion(
-        packageJson["engines"]
-    );
     const preferredVersion =
         explicitVersion ?? normalizeNodeVersion(process.versions.node);
 
-    assertPreferredVersionSupported(preferredVersion, minimumEngineVersion);
-
     if (checkOnly) {
-        await validateVersionFiles({ expectedVersion: null });
+        await validateVersionFiles({ expectedVersion: null, packageJson });
         return;
     }
 
+    assertPreferredVersionSupported(preferredVersion, packageJson);
+
     if (checkCurrent) {
-        await validateVersionFiles({ expectedVersion: preferredVersion });
+        await validateVersionFiles({
+            expectedVersion: preferredVersion,
+            packageJson,
+        });
         return;
     }
 
