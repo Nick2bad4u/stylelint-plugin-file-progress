@@ -1,9 +1,15 @@
+import { createVitestConfig } from "vitest-config-nick2bad4u";
 import { defineConfig } from "vitest/config";
 
+const sharedConfig = createVitestConfig();
+
 export default defineConfig({
+    ...sharedConfig,
     test: {
+        ...sharedConfig.test,
         clearMocks: true,
         coverage: {
+            ...sharedConfig.test?.coverage,
             include: ["src/**/*.ts"],
             provider: "v8",
             reporter: [
