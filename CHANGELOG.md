@@ -9,12 +9,16 @@
 
 ### 🛠️ Bug Fixes
 
+- [`cc3c9c8`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/cc3c9c8af75b93e4e35befd049b8450529c74c23 "Diff: 2 files, +2 | -2") — 🐛 [fix] Round fractional milliseconds in short summaries&nbsp;<sub><em>(2&nbsp;files,&nbsp;+2,&nbsp;-2)</em></sub>
+
+- [`59e0353`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/59e0353b9502dbb15f227d2b8c6218f03a232c87 "Diff: 1 file, +1 | -1") — 🐛 [fix] Synchronize exported metadata with version 1.0.2&nbsp;<sub><em>(1&nbsp;file,&nbsp;+1,&nbsp;-1)</em></sub>
+
 - [`738b7c7`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/738b7c77981b935e410030ded956386497200bd9 "Diff: 66 files, +730 | -293") — 🐛 [fix] Match ESLint progress colors and terminal formatting&nbsp;<sub><em>(66&nbsp;files,&nbsp;+730,&nbsp;-293)</em></sub>
   - 🐛 [fix] Dim the activity text, marks, continuation arrows, and path separators; cycle bold directory colors and distinguish green filename stems from extensions.
-  - 🐛 [fix] Color all spinner frames cyan and align summary marks, emphasis, spacing, duration units, labels, and metric colors while preserving observed-file and process-exit semantics.
-  - 🧪 [test] Cover ANSI output, directory palette cycling, exact Windows and POSIX path text, terminal-control escaping, summaries, and all five spinner styles.
-  - 📝 [docs] Regenerate terminal recordings and GIFs, render ANSI weight and dimming in the static poster, and explain presentation parity and Stylelint lifecycle boundaries.
-  - 👷 [build] Retain native RegExp splitting for path separators because the shared ts-extras stringSplit helper accepts only string separators.
+    🐛 [fix] Color all spinner frames cyan and align summary marks, emphasis, spacing, duration units, labels, and metric colors while preserving observed-file and process-exit semantics.
+    🧪 [test] Cover ANSI output, directory palette cycling, exact Windows and POSIX path text, terminal-control escaping, summaries, and all five spinner styles.
+    📝 [docs] Regenerate terminal recordings and GIFs, render ANSI weight and dimming in the static poster, and explain presentation parity and Stylelint lifecycle boundaries.
+    👷 [build] Retain native RegExp splitting for path separators because the shared ts-extras stringSplit helper accepts only string separators.
 
 ### 📝 Documentation
 
@@ -23,6 +27,10 @@
   - 🐛 [fix] Improve light and dark contrast, make embedded inspector navigation consistent, validate the generated API route, and generate API docs before local startup.
   - 🧹 [chore] Integrate compatible maintenance dependencies and verified action pins, preserve the full lint gate, validate Node development ranges, synchronize npm workspace pins, and prepare dependency updates without running unreviewed lifecycle scripts.
   - 🧪 [test] Validate 63 tests, 31 demos, complete public API documentation, packed Stylelint 16/17 consumers, exact Node 22.0.0 compatibility, 16 toolchain CLI scenarios, a lifecycle update fixture, and light/dark browser accessibility checks.
+
+### 🧹 Chores
+
+- [`f98136c`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/f98136c7ec1ecf3b1165a6326bcc5eedbbcaf08d "Diff: 3 files, +34 | -8") — 🧹 [chore] Prepare the 1.0.2 progress presentation release&nbsp;<sub><em>(3&nbsp;files,&nbsp;+34,&nbsp;-8)</em></sub>
 
 > [!NOTE]
 > **Release comparison**: https://github.com/Nick2bad4u/stylelint-plugin-file-progress/compare/v1.0.1...v1.0.2
