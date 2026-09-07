@@ -20,6 +20,8 @@ The summary spans the process lifetime after the first observed file. Editor int
 
 The default stderr stream keeps stdout intact, including CSS emitted when fixing stdin. Stylelint's normal CLI diagnostic report also uses stderr; use `--output-file report.json --formatter json` when consuming a machine-readable report. Explicitly selecting stdout mixes progress into that stream. Each display ends with a newline, so the plugin does not patch streams, replace formatters, or leave an animation running over the final report.
 
+Windows terminals use Node's console-aware output for Unicode filenames, spinner frames, marks, and ANSI colors, including the shutdown summary. The plugin does not change the console code page, terminal width, or the linter's color settings. Stylelint's string formatter wraps diagnostics to the terminal width; the same wrapping applies with progress disabled.
+
 The last valid file options determine the summary settings. The process exit code controls its success/failure appearance; applications using the Node API must manage their own exit status.
 
 ## Node and module formats

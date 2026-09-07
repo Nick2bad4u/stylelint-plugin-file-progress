@@ -11,7 +11,7 @@ export const meta = {
     /** Namespace used by the file-progress/activate rule. */
     namespace: "file-progress",
     /** Version of this plugin build, matching package.json. */
-    version: "1.0.0",
+    version: "1.0.1",
 } as const;
 /** Static package identity exposed on the plugin pack. */
 export type FileProgressMetadata = typeof meta;
