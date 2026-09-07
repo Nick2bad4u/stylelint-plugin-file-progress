@@ -47,7 +47,7 @@ The tarball publish command uses an explicit `./` prefix, as npm 12 otherwise in
 
 ## Maintenance boundaries
 
-Stylelint Config Inspector 2.3.5 restores three root-relative icon URLs during hydration even when built with `--base`. A scoped post-build correction fixes only those icon link values in its generated JavaScript. Documentation checks reject the broken URLs and require the icon files. Remove this correction when the inspector fixes its static build.
+Stylelint Config Inspector 2.3.7 provides an embedded startup favicon and resolves its active icon links from the runtime deployment base. Upstream browser regressions cover startup with JavaScript disabled and root and nested deployments after navigation. This repository uses that release directly; the temporary JavaScript post-processing correction has been removed. Documentation checks still reject root-relative icon links and require the icon files.
 
 The documentation parser override is a maintained fork, not an upstream `image-size` release. Its source delta, exact version, license, API compatibility, and integrity are documented in [contributing](./contributing.md). Reassess it when Docusaurus adopts a patched parser; it is not shipped as a plugin runtime dependency.
 
