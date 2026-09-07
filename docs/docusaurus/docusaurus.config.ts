@@ -1,5 +1,7 @@
 import type { Config } from "@docusaurus/types";
 
+import project from "./src/data/project.json" with { type: "json" };
+
 const config = {
     baseUrl: "/stylelint-plugin-file-progress/",
     baseUrlIssueBanner: true,
@@ -47,8 +49,21 @@ const config = {
             {
                 blog: false,
                 docs: {
-                    editUrl:
-                        "https://github.com/Nick2bad4u/stylelint-plugin-file-progress/edit/main/docs/docusaurus/",
+                    editUrl: ({ docPath }: Readonly<{ docPath: string }>) => {
+                        if (docPath.startsWith("developer/api/"))
+                            return undefined;
+                        const source =
+                            docPath === "activate.md"
+                                ? "docs/rules/activate.md"
+                                : docPath === "developer/contributing.md"
+                                  ? "CONTRIBUTING.md"
+                                  : docPath === "presets.md" ||
+                                      docPath === "demos.md" ||
+                                      docPath.startsWith("presets/")
+                                    ? "scripts/sync.mjs"
+                                    : `docs/docusaurus/site-docs/${docPath}`;
+                        return `https://github.com/Nick2bad4u/stylelint-plugin-file-progress/edit/main/${source}`;
+                    },
                     path: "site-docs",
                     routeBasePath: "/",
                     sidebarPath: "./sidebars.ts",
@@ -61,22 +76,56 @@ const config = {
     tagline: "Know which stylesheet is being linted.",
     themeConfig: {
         colorMode: { defaultMode: "dark", respectPrefersColorScheme: true },
+        docs: { sidebar: { autoCollapseCategories: false, hideable: true } },
         footer: {
-            copyright: "Copyright © 2026 Nick2bad4u. MIT licensed.",
+            copyright:
+                '© 2026 <a href="https://github.com/Nick2bad4u">Nick2bad4u</a> · MIT licensed · Built with <a href="https://docusaurus.io/">Docusaurus</a>.',
             links: [
                 {
                     items: [
-                        { label: "Getting started", to: "/" },
-                        { label: "Compatibility", to: "/compatibility" },
-                        { label: "Presets", to: "/presets" },
+                        { label: "Overview", to: "/overview" },
+                        { label: "Getting started", to: "/getting-started" },
+                        { label: "Compare presets", to: "/presets" },
+                        { label: "Rule & options", to: "/activate" },
+                        { label: "Terminal demos", to: "/demos" },
                     ],
-                    title: "Use the plugin",
+                    title: "📚 Explore",
                 },
                 {
                     items: [
                         {
                             href: "https://github.com/Nick2bad4u/stylelint-plugin-file-progress",
-                            label: "Repository",
+                            label: "GitHub repository",
+                        },
+                        {
+                            href: "https://www.npmjs.com/package/stylelint-plugin-file-progress",
+                            label: "npm package",
+                        },
+                        {
+                            href: "https://github.com/Nick2bad4u/stylelint-plugin-file-progress/releases",
+                            label: "Releases & changelog",
+                        },
+                        {
+                            href: "https://github.com/Nick2bad4u/stylelint-plugin-file-progress/issues",
+                            label: "Report an issue",
+                        },
+                        {
+                            label: "Project & ecosystem links",
+                            to: "/resources",
+                        },
+                    ],
+                    title: "📦 Project",
+                },
+                {
+                    items: [
+                        {
+                            label: "Contributing",
+                            to: "/developer/contributing",
+                        },
+                        { label: "API reference", to: "/developer/api" },
+                        {
+                            label: "Compatibility & metrics",
+                            to: "/compatibility",
                         },
                         {
                             href: "pathname:///eslint-inspector/",
@@ -89,7 +138,7 @@ const config = {
                             target: "_self",
                         },
                     ],
-                    title: "Development",
+                    title: "🛠 Development",
                 },
             ],
             style: "dark",
@@ -97,17 +146,86 @@ const config = {
         image: "img/social-card.png",
         navbar: {
             items: [
-                { label: "Options", position: "left", to: "/activate" },
-                { label: "Presets", position: "left", to: "/presets" },
+                {
+                    items: [
+                        { label: "Overview", to: "/overview" },
+                        { label: "Getting started", to: "/getting-started" },
+                        { label: "Rule & options", to: "/activate" },
+                        {
+                            label: "Compatibility & metrics",
+                            to: "/compatibility",
+                        },
+                        { label: "Troubleshooting", to: "/troubleshooting" },
+                    ],
+                    label: "📚 Docs",
+                    position: "left",
+                    type: "dropdown",
+                },
+                {
+                    items: [
+                        { label: "Compare all presets", to: "/presets" },
+                        ...project.presets.map((preset) => ({
+                            label: `${preset.icon} ${preset.label}`,
+                            to: `/presets/${preset.name}`,
+                        })),
+                    ],
+                    label: "⚙ Presets",
+                    position: "left",
+                    type: "dropdown",
+                },
+                { label: "▶ Demos", position: "left", to: "/demos" },
+                {
+                    items: [
+                        {
+                            label: "Contributing",
+                            to: "/developer/contributing",
+                        },
+                        { label: "API reference", to: "/developer/api" },
+                        {
+                            label: "Quality review",
+                            to: "/developer/quality-review",
+                        },
+                        { label: "Inspectors & resources", to: "/resources" },
+                    ],
+                    label: "🛠 Dev",
+                    position: "right",
+                    type: "dropdown",
+                },
                 {
                     href: "https://github.com/Nick2bad4u/stylelint-plugin-file-progress",
                     label: "GitHub",
                     position: "right",
                 },
             ],
+            logo: { alt: "", src: "img/logo.svg" },
             title: "Stylelint File Progress",
         },
+        prism: {
+            additionalLanguages: [
+                "bash",
+                "json",
+                "scss",
+            ],
+        },
     },
+    themes: [
+        [
+            "@easyops-cn/docusaurus-search-local",
+            {
+                docsDir: "site-docs",
+                docsRouteBasePath: "/",
+                hashed: "filename",
+                highlightSearchTermsOnTargetPage: true,
+                indexBlog: false,
+                indexDocs: true,
+                indexPages: true,
+                language: "en",
+                searchBarShortcut: true,
+                searchBarShortcutHint: true,
+                searchResultContextMaxLength: 96,
+            },
+        ],
+    ],
     title: "Stylelint File Progress",
     trailingSlash: false,
     url: "https://nick2bad4u.github.io",

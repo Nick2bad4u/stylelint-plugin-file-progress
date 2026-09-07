@@ -3,9 +3,7 @@ import { configs, configNames, meta } from "../dist/plugin.js";
 import { defaultSettings } from "../dist/_internal/options.js";
 import { format, resolveConfig } from "prettier";
 import { optionDemos } from "./demo-cases.mjs";
-
-const badges =
-    "[![Project type: Stylelint%20plugin.](https://flat.badgen.net/static/type/Stylelint%20plugin/A21CAF)](https://github.com/Nick2bad4u/stylelint-plugin-file-progress) [![Latest npm version.](https://flat.badgen.net/npm/v/stylelint-plugin-file-progress?color=0E7490)](https://www.npmjs.com/package/stylelint-plugin-file-progress) [![Monthly npm downloads.](https://flat.badgen.net/npm/dm/stylelint-plugin-file-progress?color=BE185D)](https://www.npmjs.com/package/stylelint-plugin-file-progress) [![Supported Node.js versions.](https://flat.badgen.net/npm/node/stylelint-plugin-file-progress?color=4D7C0F)](https://www.npmjs.com/package/stylelint-plugin-file-progress) [![TypeScript declaration status.](https://flat.badgen.net/npm/types/stylelint-plugin-file-progress?color=6D28D9)](https://www.npmjs.com/package/stylelint-plugin-file-progress) [![Codecov coverage.](https://flat.badgen.net/codecov/github/Nick2bad4u/stylelint-plugin-file-progress/main)](https://codecov.io/gh/Nick2bad4u/stylelint-plugin-file-progress/branch/main) [![GitHub Actions checks on main.](https://flat.badgen.net/github/checks/Nick2bad4u/stylelint-plugin-file-progress/main)](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/actions) [![NPM license.](https://flat.badgen.net/npm/license/stylelint-plugin-file-progress?color=4338CA)](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/blob/main/LICENSE)";
+import { badges, presetDetails } from "./docs-catalog.mjs";
 
 const write = process.argv.includes("--write");
 async function sync(file, expected) {
@@ -27,9 +25,17 @@ if (
     (await readFile(".nvmrc", "utf8"))
 )
     throw new Error("Node version files differ");
+if (Object.keys(presetDetails).length !== configNames.length)
+    throw new Error(
+        "The documentation preset catalog must match the public exports"
+    );
 for (const name of configNames) {
-    if (!manifest.exports[`./configs/${name}`] || !configs[name])
-        throw new Error(`Missing preset export: ${name}`);
+    if (
+        !manifest.exports[`./configs/${name}`] ||
+        !configs[name] ||
+        !presetDetails[name]
+    )
+        throw new Error(`Missing preset export or documentation: ${name}`);
 }
 let rule = await readFile("docs/rules/activate.md", "utf8");
 const table = [
@@ -49,63 +55,166 @@ rule = rule.replace(
 );
 await sync("docs/rules/activate.md", rule);
 await sync("docs/docusaurus/site-docs/activate.md", rule);
+
+const presets = configNames.map((name) => {
+    const { audience, description, icon, label, tone } = presetDetails[name];
+    return { audience, description, icon, label, name, tone };
+});
+const presetTable = (base, suffix = "") =>
+    [
+        "| Preset | Best for | Behavior |",
+        "| --- | --- | --- |",
+        ...presets.map(
+            ({ name, icon, audience, description }) =>
+                `| [${icon} ${name}](${base}${name}${suffix}) | ${audience} | ${description} |`
+        ),
+    ].join("\n");
+
+await mkdir("docs/docusaurus/src/data", { recursive: true });
+await sync(
+    "docs/docusaurus/src/data/project.json",
+    JSON.stringify({
+        badges,
+        demoCount: configNames.length + optionDemos.length,
+        optionCount: Object.keys(defaultSettings).length,
+        presets,
+    })
+);
+
 await mkdir("docs/docusaurus/site-docs/presets", { recursive: true });
-const descriptions = {
-    recommended: "Show each file using the default display options.",
-    "recommended-ci": "Hide all plugin output when CI is exactly true.",
-    "recommended-ci-detailed":
-        "Hide live output in CI while retaining the detailed process summary.",
-    "recommended-compact":
-        "Announce generic activity once, without showing filenames.",
-    "recommended-detailed": "Show filenames and the detailed process summary.",
-    "recommended-summary-only": "Show only the final process summary.",
-    "recommended-tty":
-        "Show output only when stderr is an interactive terminal.",
-};
 await sync(
     "docs/docusaurus/site-docs/presets.md",
     [
-        "# Presets",
+        "---",
+        "sidebar_label: Presets",
+        "description: Compare seven Stylelint progress presets for local terminals, CI, compact activity, and process summaries.",
+        "---",
+        "",
+        "# Choose your progress preset",
         "",
         "Every preset enables `file-progress/activate`. Add its subpath to your Stylelint `extends` array after your existing configs.",
         "",
-        "| Preset | Behavior |",
-        "| --- | --- |",
-        ...configNames.map(
-            (name) =>
-                `| [${name}](./presets/${name}.md) | ${descriptions[name]} |`
-        ),
+        "## Choose by workflow",
+        "",
+        presetTable("./presets/", ".md"),
+        "",
+        "## Use a preset",
+        "",
+        "```js",
+        "export default {",
+        '    extends: ["stylelint-plugin-file-progress/configs/recommended"],',
+        "};",
+        "```",
+        "",
+        "Keep existing shared configs before the progress preset. Each preset includes plugin registration; the preset itself adds no CSS diagnostics.",
+        "",
+        "## Customize or disable",
+        "",
+        'Override `"file-progress/activate": [true, options]` in `rules` to customize the display, or set the rule to `null` to disable it. See [getting started](./getting-started.md#customize-the-display) and [all options](./activate.md#options).',
+        "",
+        "## CI and terminal behavior",
+        "",
+        "The two CI presets activate their CI behavior only when `CI` is exactly `true`. Outside CI, both display ordinary progress. The TTY preset checks stderr, the default output stream. Summary counts and timing cover the process lifetime; read [compatibility and metrics](./compatibility.md) before interpreting them.",
+        "",
+        "Watch [all preset recordings](./demos.md#presets), explore [option demonstrations](./demos.md#options), or use [troubleshooting](./troubleshooting.md) if your output differs.",
         "",
     ].join("\n")
 );
-for (const name of configNames)
+
+for (const { name, label, tone, description } of presets) {
     await sync(
         `docs/docusaurus/site-docs/presets/${name}.md`,
-        `# ${name}\n\n${descriptions[name]}\n\n\x60\x60\x60js\nexport default {\n    extends: ["stylelint-plugin-file-progress/configs/${name}"],\n};\n\x60\x60\x60\n\n![${name} colored terminal demonstration](../../static/demos/presets/${name}.gif)\n\n${name.includes("-ci") ? "This recording uses CI=true. Outside CI, the preset displays ordinary progress.\n\n" : ""}See [all options](../activate.md) and [compatibility](../compatibility.md) for summary and terminal behavior.\n`
+        [
+            "---",
+            `sidebar_label: ${name}`,
+            `description: ${description}`,
+            "---",
+            "",
+            `# ${name}`,
+            "",
+            `<span className="sfp-pill sfp-tone-${tone}">${label}</span>`,
+            "",
+            description,
+            "",
+            "## Configuration",
+            "",
+            "```js",
+            "export default {",
+            `    extends: ["stylelint-plugin-file-progress/configs/${name}"],`,
+            "};",
+            "```",
+            "",
+            "Keep your existing shared configs before this preset.",
+            "",
+            "## Terminal preview",
+            "",
+            `![${name} colored terminal demonstration](../../static/demos/presets/${name}.gif)`,
+            "",
+            ...(name.includes("-ci")
+                ? [
+                      "This recording uses CI=true. Outside CI, the preset displays ordinary progress.",
+                      "",
+                  ]
+                : []),
+            "## Make it yours",
+            "",
+            `See [all options](../activate.md), [compare presets](../presets.md), and [compatibility](../compatibility.md) for summary and terminal behavior. Explore the [demo gallery](../demos.md#${name}) or follow the [setup guide](../getting-started.md).`,
+            "",
+        ].join("\n")
     );
+}
+
 await mkdir("docs/docusaurus/site-docs/developer", { recursive: true });
 await sync(
     "docs/docusaurus/site-docs/developer/contributing.md",
     await readFile("CONTRIBUTING.md", "utf8")
 );
-const readme = `# stylelint-plugin-file-progress\n\nLive filenames and configurable process summaries for Stylelint.\n\n${badges}\n\n![Colored per-file progress](https://raw.githubusercontent.com/Nick2bad4u/stylelint-plugin-file-progress/main/docs/docusaurus/static/demos/presets/recommended.gif)\n\n![Detailed process summary](https://raw.githubusercontent.com/Nick2bad4u/stylelint-plugin-file-progress/main/docs/docusaurus/static/demos/presets/recommended-detailed.gif)\n\n[Documentation](https://nick2bad4u.github.io/stylelint-plugin-file-progress/) · [All preset and option demos](https://nick2bad4u.github.io/stylelint-plugin-file-progress/demos)\n\n## Quick start\n\n\x60\x60\x60sh\nnpm install --save-dev stylelint stylelint-plugin-file-progress\n\x60\x60\x60\n\n\x60\x60\x60js\nexport default {\n    extends: ["stylelint-plugin-file-progress/configs/recommended"],\n};\n\x60\x60\x60\n\n## Rule\n\n| Rule | Purpose |\n| --- | --- |\n| [file-progress/activate](docs/rules/activate.md) | Observe files without changing CSS or lint findings. |\n\n## Presets\n\n${configNames.map((name) => `- \x60${name}\x60: ${descriptions[name]}`).join("\n")}\n\n## Compatibility\n\nNode.js 22+, Stylelint \x60^16.0.0 || ^17.14.0\x60, ESM and CommonJS. CommonJS with Stylelint 17 requires Node 22.12+ for synchronous ESM loading. Progress goes to stderr by default. Summaries measure observed file events over the process lifetime, not problem counts or exact per-file completion times.\n\nSee [contributing](CONTRIBUTING.md) for development and verification, and [NOTICE](NOTICE) for the ESLint progress project's attribution.\n`;
+
+let readme = await readFile("README.md", "utf8");
+const readmeSections = {
+    badges: badges
+        .map(({ alt, href, src }) => `[![${alt}.](${src})](${href})`)
+        .join(" "),
+    presets: presetTable(
+        "https://nick2bad4u.github.io/stylelint-plugin-file-progress/presets/"
+    ),
+};
+for (const [section, content] of Object.entries(readmeSections)) {
+    const startMarker = `<!-- ${section}:start -->`;
+    const endMarker = `<!-- ${section}:end -->`;
+    const start = readme.indexOf(startMarker);
+    const end = readme.indexOf(endMarker);
+    if (start < 0 || end < start)
+        throw new Error(`README is missing generated ${section} markers`);
+    readme =
+        readme.slice(0, start + startMarker.length) +
+        `\n\n${content}\n\n` +
+        readme.slice(end);
+}
 await sync("README.md", readme);
 
 await sync(
     "docs/docusaurus/site-docs/demos.md",
     [
+        "---",
+        "sidebar_label: Terminal demos",
+        "description: Watch every preset and display option using reproducible recordings from the actual Stylelint progress controller.",
+        "---",
+        "",
         "# Colored terminal demos",
         "",
         "These deterministic recordings use the plugin's actual display controller. File events arrive at fixed intervals to make behavior reproducible; the timings illustrate process-wide metrics and do not measure individual file completion. Spinner frames advance with file events, and each update leaves a complete line.",
         "",
         "Animated GIFs follow the presentation used by eslint-plugin-file-progress-2. For a still image, see the [static terminal poster](../static/img/terminal.svg). The casts preserve selectable terminal text and ANSI colors.",
         "",
+        "Jump to [presets](#presets), [options](#options), or [recording instructions](#reproduce-the-recordings). Choose a [preset](./presets.md) or review the [option defaults](./activate.md#options) while comparing output.",
+        "",
         "## Presets",
         "",
-        ...configNames.flatMap((name) => [
+        ...presets.flatMap(({ name, description }) => [
             `### ${name}`,
             "",
-            descriptions[name],
+            description,
             "",
             `![${name} terminal recording](../static/demos/presets/${name}.gif)`,
             "",

@@ -18,6 +18,26 @@ const config = [
     },
     ...nick2bad4u.configs.all,
     {
+        files: ["docs/docusaurus/src/pages/index.tsx"],
+        name: "Docusaurus maps the index page filename to the public site root",
+        rules: { "canonical/filename-no-index": "off" },
+    },
+    {
+        files: [
+            "docs/docusaurus/docusaurus.config.ts",
+            "docs/docusaurus/sidebars.ts",
+            "docs/docusaurus/src/pages/index.tsx",
+        ],
+        name: "JSON module imports require an explicit extension and import attribute",
+        rules: {
+            "import-x/extensions": [
+                "error",
+                "ignorePackages",
+                { json: "always" },
+            ],
+        },
+    },
+    {
         files: ["src/plugin.ts", "src/types.ts"],
         name: "Public declarations stay self-contained instead of imposing type-fest's ES2025 library globals on consumers",
         rules: {

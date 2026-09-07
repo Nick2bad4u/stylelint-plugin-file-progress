@@ -5,6 +5,10 @@ import { optionDemos } from "./demo-cases.mjs";
 const root = "docs/docusaurus/build/";
 for (const route of [
     "index.html",
+    "overview.html",
+    "getting-started.html",
+    "troubleshooting.html",
+    "resources.html",
     "activate.html",
     "presets.html",
     "compatibility.html",
@@ -26,6 +30,19 @@ for (const { name, group } of [
     await access(root + `demos/${group}/${name}.gif`);
 }
 const homepage = await readFile(root + "index.html", "utf8");
+const project = JSON.parse(
+    await readFile("docs/docusaurus/src/data/project.json", "utf8")
+);
+for (const { name } of project.presets) {
+    if (
+        !homepage.includes(
+            `href="/stylelint-plugin-file-progress/presets/${name}"`
+        )
+    )
+        throw new Error(`Homepage is missing preset link: ${name}`);
+}
+if (!(await readdir(root)).some((file) => /^search-index.*\.json$/u.test(file)))
+    throw new Error("The local search index was not generated");
 const inspector = root + "stylelint-inspector/";
 for (const icon of [
     "favicon.svg",
