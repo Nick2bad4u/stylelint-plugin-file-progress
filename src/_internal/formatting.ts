@@ -21,16 +21,15 @@ export function formatProgress(
     const colors = pc.createColors(useColor);
     const prefix = options.hidePrefix
         ? ""
-        : `${colors.bold(colors.cyan("SFP"))} ${safeText(options.prefixMark)} `;
+        : `${colors.bold(colors.cyan("SFP"))} ${colors.dim(safeText(options.prefixMark))} `;
     if (options.mode === "compact" || options.hideFileName)
-        return `${prefix}linting project files...`;
-    const displayed =
-        options.pathFormat === "basename"
-            ? pathImplementation(filename).basename(filename)
-            : filename;
-    const text = colors.green(safeText(displayed));
+        return `${prefix}${colors.dim("linting project files...")}`;
+    const text = formatPath(filename, options, colors);
     if (options.hidePrefix) return text;
-    return `${prefix}linting${options.fileNameOnNewLine ? "\n  ↳" : ""} ${text}`;
+    const continuation = options.fileNameOnNewLine
+        ? `\n${colors.dim("  ↳")}`
+        : "";
+    return `${prefix}${colors.dim("linting")}${continuation} ${text}`;
 }
 
 /** Format a process-shutdown summary without claiming diagnostic counts. */
@@ -40,25 +39,33 @@ export function formatSummary(
     useColor: boolean
 ): string {
     const colors = pc.createColors(useColor);
-    const prefix = options.hidePrefix ? "" : `${colors.cyan("SFP:")} `;
-    const status =
+    const resultColor = stats.exitCode === 0 ? colors.green : colors.red;
+    const prefix = options.hidePrefix
+        ? ""
+        : `${resultColor(safeText(options.prefixMark))} ${colors.bold(colors.cyan("SFP"))}${colors.dim(":")} `;
+    const mark = safeText(
+        stats.exitCode === 0 ? options.successMark : options.failureMark
+    );
+    const message =
         stats.exitCode === 0
-            ? colors.green(
-                  `${safeText(options.successMark)} ${safeText(options.successMessage)}`
-              )
-            : colors.red(
-                  `${safeText(options.failureMark)} Process exited with status ${stats.exitCode}.`
-              );
+            ? safeText(options.successMessage)
+            : `Process exited with status ${stats.exitCode}.`;
+    const status = `${colors.bold(resultColor(mark))} ${resultColor(message)}`;
     const title = `${prefix}${status}`;
     if (!options.detailedSuccess) return title;
     const seconds = stats.durationMs / 1000;
+    const duration =
+        stats.durationMs < 1000
+            ? `${stats.durationMs}ms`
+            : `${seconds.toFixed(2)}s`;
+    const throughput = `${seconds > 0 ? (stats.filesObserved / seconds).toFixed(2) : "0.00"} files/s`;
     return arrayJoin(
         [
             title,
-            `  Files observed: ${stats.filesObserved}`,
-            `  Elapsed since first file: ${seconds.toFixed(2)}s`,
-            `  Observed throughput: ${seconds > 0 ? (stats.filesObserved / seconds).toFixed(2) : "0.00"} files/s`,
-            `  Process exit code: ${stats.exitCode}`,
+            `${colors.dim("  Elapsed since first file:")} ${colors.yellow(duration)}`,
+            `${colors.dim("  Files observed:")} ${colors.yellow(String(stats.filesObserved))}`,
+            `${colors.dim("  Observed throughput:")} ${colors.yellow(throughput)}`,
+            `${colors.dim("  Process exit code:")} ${resultColor(String(stats.exitCode))}`,
         ],
         "\n"
     );
@@ -82,6 +89,50 @@ export function safeText(value: string): string {
             return code < 32
                 ? JSON.stringify(character).slice(1, -1)
                 : character;
+        }),
+        ""
+    );
+}
+
+/** Match the ESLint renderer while retaining the exact displayed path text. */
+function formatPath(
+    filename: string,
+    options: Readonly<NormalizedProgressSettings>,
+    colors: Readonly<ReturnType<typeof pc.createColors>>
+): string {
+    const formatFile = (file: string): string => {
+        const extension = file.lastIndexOf(".");
+        return extension > 0
+            ? `${colors.bold(colors.green(file.slice(0, extension)))}${colors.green(file.slice(extension))}`
+            : colors.bold(colors.green(file));
+    };
+    if (options.pathFormat === "basename")
+        return formatFile(
+            safeText(pathImplementation(filename).basename(filename))
+        );
+
+    const segments = stripVTControlCharacters(filename).split(
+        /(?<separator>[\/\\]+)/v
+    );
+    const directoryColors = [
+        colors.blue,
+        colors.cyan,
+        colors.green,
+        colors.magenta,
+        colors.yellow,
+    ];
+    let directoryIndex = 0;
+    return arrayJoin(
+        segments.map((segment, index) => {
+            const text = safeText(segment);
+            if (index % 2 === 1) return colors.dim(text);
+            if (index === segments.length - 1) return formatFile(text);
+            if (!text) return text;
+            const color =
+                directoryColors[directoryIndex % directoryColors.length] ??
+                colors.cyan;
+            directoryIndex += 1;
+            return colors.bold(color(text));
         }),
         ""
     );

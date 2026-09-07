@@ -116,7 +116,7 @@ export class ProgressController {
             settings,
             this.#host.color(settings.outputStream)
         );
-        this.#host.write(settings.outputStream, `${text}\n`, true);
+        this.#host.write(settings.outputStream, `\n${text}\n`, true);
     }
 
     /** Record a result once, retaining the last valid settings for shutdown. */
@@ -150,16 +150,18 @@ export class ProgressController {
         )
             return;
         this.#rendered = now;
+        const useColor = this.#host.color(settings.outputStream);
+        const colors = pc.createColors(useColor);
         const frameSet = frames[settings.spinnerStyle];
         const frame = this.#host.isTTY(settings.outputStream)
-            ? `${frameSet[(this.#count - 1) % frameSet.length] ?? "•"} `
+            ? `${colors.cyan(frameSet[(this.#count - 1) % frameSet.length] ?? "•")} `
             : "";
         const text = formatProgress(
             settings.pathFormat === "basename"
                 ? filename
                 : relativePath(filename, this.#host.cwd()),
             settings,
-            this.#host.color(settings.outputStream)
+            useColor
         );
         // File-driven frames leave a complete line: no timer can overwrite Stylelint's formatter.
         this.#host.write(settings.outputStream, `${frame}${text}\n`, false);

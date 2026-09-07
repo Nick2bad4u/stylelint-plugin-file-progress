@@ -71,4 +71,8 @@ The success message follows a zero process exit code. It does not imply that Sty
 
 Terminal output advances the chosen spinner frame when a file is displayed, then ends the line. No background animation or active timer runs to interfere with Stylelint's report. Redirected output uses plain lines without frames or color.
 
+The terminal palette matches ESLint File Progress: cyan spinner frames and a bold cyan plugin label; dim status text, separators, and continuation arrows; directory names cycling through blue, cyan, green, magenta, and yellow; and a green filename with its stem emphasized. Summary labels are dim, metric values are yellow, and exit status uses green or red. A blank line separates the process summary from preceding output.
+
+The display options and seven presets follow the ESLint counterpart. Stylelint retains its own lifecycle contract: frames advance on file events, summaries describe observed files and process timing, and no problem counts are inferred from the exit code.
+
 Throttling limits displayed paths, not observed counts. Compact mode emits one generic activity notice. `ttyOnly` suppresses both progress and summaries when the selected stream is not a terminal, including when `showSummaryWhenHidden` is enabled.

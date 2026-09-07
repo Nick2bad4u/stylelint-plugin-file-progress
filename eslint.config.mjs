@@ -18,6 +18,11 @@ const config = [
     },
     ...nick2bad4u.configs.all,
     {
+        files: ["src/_internal/formatting.ts"],
+        name: "Path rendering retains separators with a RegExp split; ts-extras stringSplit accepts only string separators",
+        rules: { "typefest/prefer-ts-extras-string-split": "off" },
+    },
+    {
         files: ["docs/docusaurus/src/pages/index.tsx"],
         name: "Docusaurus maps the index page filename to the public site root",
         rules: { "canonical/filename-no-index": "off" },
