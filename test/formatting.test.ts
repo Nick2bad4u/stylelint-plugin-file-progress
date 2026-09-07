@@ -118,7 +118,7 @@ describe("terminal presentation", () => {
             expect.hasAssertions();
 
             const rendered = formatSummary(
-                { durationMs: 750, exitCode, filesObserved: 3 },
+                { durationMs: 750.125, exitCode, filesObserved: 3 },
                 normalizeSettings({ detailedSuccess: true }),
                 true
             );

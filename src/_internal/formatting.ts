@@ -56,7 +56,7 @@ export function formatSummary(
     const seconds = stats.durationMs / 1000;
     const duration =
         stats.durationMs < 1000
-            ? `${stats.durationMs}ms`
+            ? `${Math.round(stats.durationMs)}ms`
             : `${seconds.toFixed(2)}s`;
     const throughput = `${seconds > 0 ? (stats.filesObserved / seconds).toFixed(2) : "0.00"} files/s`;
     return arrayJoin(
