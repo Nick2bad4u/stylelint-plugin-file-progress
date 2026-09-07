@@ -13,6 +13,7 @@ for (const route of [
     "presets.html",
     "compatibility.html",
     "demos.html",
+    "developer/api.html",
     ...configNames.map((name) => `presets/${name}.html`),
     "eslint-inspector/index.html",
     "stylelint-inspector/index.html",

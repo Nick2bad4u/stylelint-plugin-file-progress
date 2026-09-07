@@ -79,7 +79,7 @@ const config = {
         docs: { sidebar: { autoCollapseCategories: false, hideable: true } },
         footer: {
             copyright:
-                '© 2026 <a href="https://github.com/Nick2bad4u">Nick2bad4u</a> · MIT licensed · Built with <a href="https://docusaurus.io/">Docusaurus</a>.',
+                '© 2026 <a class="sfp-footer-link" href="https://github.com/Nick2bad4u">Nick2bad4u</a> · MIT licensed · Built with <a class="sfp-footer-link" href="https://docusaurus.io/">Docusaurus</a>.',
             links: [
                 {
                     items: [
@@ -206,6 +206,60 @@ const config = {
                 "json",
                 "scss",
             ],
+            theme: {
+                plain: { backgroundColor: "#182431", color: "#e3edf7" },
+                styles: [
+                    {
+                        style: { color: "#b0c1d2" },
+                        types: [
+                            "comment",
+                            "prolog",
+                            "doctype",
+                            "cdata",
+                        ],
+                    },
+                    {
+                        style: { color: "#d6b8ff" },
+                        types: [
+                            "keyword",
+                            "tag",
+                            "selector",
+                            "atrule",
+                        ],
+                    },
+                    {
+                        style: { color: "#ffc27e" },
+                        types: [
+                            "boolean",
+                            "number",
+                            "constant",
+                            "symbol",
+                        ],
+                    },
+                    {
+                        style: { color: "#91d4ff" },
+                        types: [
+                            "function",
+                            "class-name",
+                            "property",
+                            "attr-name",
+                        ],
+                    },
+                    {
+                        style: { color: "#9df1df" },
+                        types: [
+                            "string",
+                            "char",
+                            "attr-value",
+                            "regex",
+                        ],
+                    },
+                    {
+                        style: { color: "#c3d4e6" },
+                        types: ["punctuation", "operator"],
+                    },
+                ],
+            },
         },
     },
     themes: [

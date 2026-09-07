@@ -34,4 +34,4 @@ To change progress in your own project, use the [preset comparison](./presets.md
 
 ## Contribute
 
-Read the [contributing guide](./developer/contributing.md) for local validation and documentation generation. The [API reference](./developer/api/index.md) is generated from the public TypeScript declarations. See [NOTICE](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/blob/main/NOTICE) for attribution and the [MIT license](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/blob/main/LICENSE) for terms.
+Read the [contributing guide](./developer/contributing.md) for local validation and documentation generation. The [API reference](https://nick2bad4u.github.io/stylelint-plugin-file-progress/developer/api) is generated from the public TypeScript declarations. See [NOTICE](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/blob/main/NOTICE) for attribution and the [MIT license](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/blob/main/LICENSE) for terms.
