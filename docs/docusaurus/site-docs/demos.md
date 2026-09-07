@@ -1,8 +1,15 @@
+---
+sidebar_label: Terminal demos
+description: Watch every preset and display option using reproducible recordings from the actual Stylelint progress controller.
+---
+
 # Colored terminal demos
 
 These deterministic recordings use the plugin's actual display controller. File events arrive at fixed intervals to make behavior reproducible; the timings illustrate process-wide metrics and do not measure individual file completion. Spinner frames advance with file events, and each update leaves a complete line.
 
 Animated GIFs follow the presentation used by eslint-plugin-file-progress-2. For a still image, see the [static terminal poster](../static/img/terminal.svg). The casts preserve selectable terminal text and ANSI colors.
+
+Jump to [presets](#presets), [options](#options), or [recording instructions](#reproduce-the-recordings). Choose a [preset](./presets.md) or review the [option defaults](./activate.md#options) while comparing output.
 
 ## Presets
 
