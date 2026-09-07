@@ -3,6 +3,35 @@
 
 # 📜 Changelog
 
+## ✨ What's Changed in v1.0.1
+
+- <b>Commit Range: ➡️</b> [`v1.0.0...v1.0.1`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/compare/v1.0.0...v1.0.1 "View full commit range on GitHub")
+
+### 🛠️ Bug Fixes
+
+- [`f2eaba8`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/f2eaba81101aeaeccabba30f05f73c750ed9eed9 "Diff: 8 files, +161 | -18") — 🐛 [fix] Preserve Unicode and colors in Windows terminals&nbsp;<sub><em>(8&nbsp;files,&nbsp;+161,&nbsp;-18)</em></sub>
+  - 🐛 [fix] Use Node console-aware streams for Windows TTY progress and shutdown summaries while retaining safe descriptor writes for redirected main-thread output.
+  - 🧪 [test] Cover both Windows output streams and unchanged colored Stylelint diagnostics at narrow and wide terminal widths.
+  - 📝 [docs] Document the console behavior and prepare the compatible 1.0.1 patch.
+
+### 🧹 Chores
+
+- [`9edb490`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/9edb4900fde609e03e08af88639aab5b71472f23 "Diff: 8 files, +470 | -314") — 🧹 [chore] Align shared tooling and adopt the upstream inspector fix (#11)&nbsp;<sub><em>(8&nbsp;files,&nbsp;+470,&nbsp;-314)</em></sub>
+  - 🧹 [chore] Align repository tooling with shared validation configs
+  - 👷 [build] Use the published Vitest and strict dual-module ATTW configs with compatible dependencies, preserve runtime coverage thresholds, and provide working lint, package, and explicit fix commands.
+  - 🧹 [chore] Group dependency updates, scope actionlint and Node diagnostics to this repository, and retain a dependency-specific lifecycle allowlist without copied scanning exclusions.
+  - 🐛 [fix] Activate build diagnostics and validate fresh package builds
+  - 👷 [build] Load the repository Node configuration explicitly during development builds and build exports before standalone package-content checks.
+  - 👷 [build] Adopt the upstream inspector base-path fix
+  - 👷 [build] Update Stylelint Config Inspector to 2.3.6 and remove the temporary compiled-JavaScript asset correction and post-build hook.
+  - 📝 [docs] Record the upstream runtime-base fix while retaining documentation checks for valid icon paths and files.
+  - 👷 [build] Adopt the released Stylelint tooling integrations
+  - 👷 [build] Use Inspector 2.3.7 with its startup and runtime icon fixes, and shared Stylelint config 3.0.0 so the repository enables progress through the shared preset.
+  - 📝 [docs] Record the completed upstream browser fix without changing the progress plugin runtime or package version.
+
+> [!NOTE]
+> **Release comparison**: https://github.com/Nick2bad4u/stylelint-plugin-file-progress/compare/v1.0.0...v1.0.1
+
 ## ✨ What's Changed in v1.0.0
 
 - <b>Commit Range: ➡️</b> [`175024c...v1.0.0`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/compare/175024cfff005672b09765769f41384681985edb...v1.0.0 "View full commit range on GitHub")
@@ -47,6 +76,10 @@
 - [`7219cb4`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/7219cb46452644b06820c450ee1acc261b27ee51 "Diff: 3 files, +55 | -11") — 🐛 [fix] Bootstrap npm before cache restoration in Actions&nbsp;<sub><em>(3&nbsp;files,&nbsp;+55,&nbsp;-11)</em></sub>
 
 ### 📝 Documentation
+
+- [`aac0090`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/aac0090d872839fbcd4f2f33515b347da28b7924 "Diff: 1 file, +4 | -4") — 📝 [docs] Preserve verified contributor links and nested release entries&nbsp;<sub><em>(1&nbsp;file,&nbsp;+4,&nbsp;-4)</em></sub>
+
+- [`3899bd5`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/3899bd57248d3b017255b105ecdb8ecba85cda53 "Diff: 1 file, +12 | -4") — 📝 [docs] Record the portable tarball gate in the complete release history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+12,&nbsp;-4)</em></sub>
 
 - [`5d78fe9`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/5d78fe9f317a7f6ffc7d2aba7fdcda2018f35d0f "Diff: 1 file, +2 | -2") — 📝 [docs] Correct first-contribution links in the release history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+2,&nbsp;-2)</em></sub>
 
