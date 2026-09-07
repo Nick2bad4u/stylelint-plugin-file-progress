@@ -12,100 +12,281 @@
     <circle cx="68" cy="25" r="6" fill="#7ee787" />
     <g font-family="Consolas,monospace" font-size="16">
         <text x="26" y="70">
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#79c0ff">Stylelint File Progress</tspan>
-            <tspan fill="#e6edf3">/ recommended-detailed</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="700" opacity="1">
+                Stylelint File Progress
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1">
+                / recommended-detailed
+            </tspan>
         </text>
         <text x="26" y="93">
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#8b949e">stderr | interactive terminal</tspan>
-            <tspan fill="#e6edf3"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#8b949e" font-weight="400" opacity="1">
+                stderr | interactive terminal
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
-        <text x="26" y="116"><tspan fill="#e6edf3"></tspan></text>
+        <text x="26" y="116">
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+        </text>
         <text x="26" y="139">
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#79c0ff">$</tspan>
-            <tspan fill="#e6edf3">npx stylelint 'src/**/*.css'</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="400" opacity="1">$</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1">
+                npx stylelint 'src/**/*.css'
+            </tspan>
         </text>
-        <text x="26" y="162"><tspan fill="#e6edf3"></tspan></text>
+        <text x="26" y="162">
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+        </text>
         <text x="26" y="185">
-            <tspan fill="#e6edf3">⠋</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#79c0ff">SFP</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#e6edf3">• linting</tspan>
-            <tspan fill="#7ee787">src/base.css</tspan>
-            <tspan fill="#e6edf3"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="400" opacity="1">⠋</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="700" opacity="1">SFP</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">•</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">
+                linting
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#79c0ff" font-weight="700" opacity="1">src</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">/</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="700" opacity="1">base</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="400" opacity="1">.css</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
         <text x="26" y="208">
-            <tspan fill="#e6edf3">⠙</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#79c0ff">SFP</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#e6edf3">• linting</tspan>
-            <tspan fill="#7ee787">src/layout.css</tspan>
-            <tspan fill="#e6edf3"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="400" opacity="1">⠙</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="700" opacity="1">SFP</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">•</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">
+                linting
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#79c0ff" font-weight="700" opacity="1">src</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">/</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="700" opacity="1">layout</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="400" opacity="1">.css</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
         <text x="26" y="231">
-            <tspan fill="#e6edf3">⠹</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#79c0ff">SFP</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#e6edf3">• linting</tspan>
-            <tspan fill="#7ee787">src/components/card.css</tspan>
-            <tspan fill="#e6edf3"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="400" opacity="1">⠹</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="700" opacity="1">SFP</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">•</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">
+                linting
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#79c0ff" font-weight="700" opacity="1">src</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">/</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="700" opacity="1">
+                components
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">/</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="700" opacity="1">card</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="400" opacity="1">.css</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
         <text x="26" y="254">
-            <tspan fill="#e6edf3">⠸</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#79c0ff">SFP</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#e6edf3">• linting</tspan>
-            <tspan fill="#7ee787">src/components/button.css</tspan>
-            <tspan fill="#e6edf3"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="400" opacity="1">⠸</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="700" opacity="1">SFP</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">•</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">
+                linting
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#79c0ff" font-weight="700" opacity="1">src</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">/</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="700" opacity="1">
+                components
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">/</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="700" opacity="1">button</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="400" opacity="1">.css</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
         <text x="26" y="277">
-            <tspan fill="#e6edf3">⠼</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#79c0ff">SFP</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#e6edf3">• linting</tspan>
-            <tspan fill="#7ee787">src/theme.css</tspan>
-            <tspan fill="#e6edf3"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="400" opacity="1">⠼</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="700" opacity="1">SFP</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">•</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">
+                linting
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#79c0ff" font-weight="700" opacity="1">src</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">/</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="700" opacity="1">theme</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="400" opacity="1">.css</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
         <text x="26" y="300">
-            <tspan fill="#e6edf3">⠴</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#79c0ff">SFP</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#e6edf3">• linting</tspan>
-            <tspan fill="#7ee787">src/utilities.css</tspan>
-            <tspan fill="#e6edf3"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="400" opacity="1">⠴</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="700" opacity="1">SFP</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">•</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">
+                linting
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#79c0ff" font-weight="700" opacity="1">src</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">/</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="700" opacity="1">
+                utilities
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="400" opacity="1">.css</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
         <text x="26" y="323">
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#79c0ff">SFP:</tspan>
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#7ee787">✔ Lint complete.</tspan>
-            <tspan fill="#e6edf3"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
         <text x="26" y="346">
-            <tspan fill="#e6edf3">Files observed: 6</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="400" opacity="1">•</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="700" opacity="1">SFP</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">:</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="700" opacity="1">✔</tspan>
+            <tspan fill="#e6edf3" font-weight="700" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="400" opacity="1">
+                Lint complete.
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
         <text x="26" y="369">
-            <tspan fill="#e6edf3">Elapsed since first file: 2.60s</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">
+                Elapsed since first file:
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e3b341" font-weight="400" opacity="1">2.60s</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
         <text x="26" y="392">
-            <tspan fill="#e6edf3">Observed throughput: 2.31 files/s</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">
+                Files observed:
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e3b341" font-weight="400" opacity="1">6</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
         <text x="26" y="415">
-            <tspan fill="#e6edf3">Process exit code: 0</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">
+                Observed throughput:
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e3b341" font-weight="400" opacity="1">
+                2.31 files/s
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
-        <text x="26" y="438"><tspan fill="#e6edf3"></tspan></text>
+        <text x="26" y="438">
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="0.6">
+                Process exit code:
+            </tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#7ee787" font-weight="400" opacity="1">0</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+        </text>
         <text x="26" y="461">
-            <tspan fill="#e6edf3"></tspan>
-            <tspan fill="#79c0ff">$</tspan>
-            <tspan fill="#e6edf3"></tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+        </text>
+        <text x="26" y="484">
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
+            <tspan fill="#a5d6ff" font-weight="400" opacity="1">$</tspan>
+            <tspan fill="#e6edf3" font-weight="400" opacity="1"></tspan>
         </text>
     </g>
 </svg>

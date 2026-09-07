@@ -195,7 +195,10 @@ describe("observational progress", () => {
         h.controller.finish(0);
 
         expect(h.write.mock.calls[0]?.[1]).toContain("\u{1B}[");
+        expect(h.write.mock.calls[0]?.[1]?.startsWith("\u{1B}[36m")).toBe(true);
+        expect(h.write.mock.calls[0]?.[1]).toContain("\u{1B}[39m ");
         expect(h.write.mock.calls[0]?.[1]).toMatch(/\n$/v);
+        expect(h.write.mock.calls.at(-1)?.[1]).toMatch(/^\n/v);
     });
 
     // eslint-disable-next-line test-signal/no-mock-call-only-tests -- Absence of output is the lifecycle contract before the first file.
