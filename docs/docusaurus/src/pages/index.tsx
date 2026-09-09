@@ -270,9 +270,9 @@ export default function Home(): JSX.Element {
                                 throughput in a single process summary.
                             </p>
                             <p>
-                                Each update ends on its own line. Spinner frames
-                                advance with file events, with no background
-                                animation running over your formatter.
+                                Each file updates the same terminal block.
+                                Spinner frames advance with file events, while
+                                formatter output stays visible.
                             </p>
                             <Link className="sfp-text-link" to="/demos">
                                 Explore all {project.demoCount} recordings →

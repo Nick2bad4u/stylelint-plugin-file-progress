@@ -278,7 +278,7 @@
         "sort-package-json": "^4.0.0",
         "stylelint": "^17.15.0",
         "stylelint-config-inspector": "^2.3.7",
-        "stylelint-config-nick2bad4u": "^3.0.1",
+        "stylelint-config-nick2bad4u": "^4.0.1",
         "stylelint-define-config": "^17.15.0",
         "tsdoc-config-nick2bad4u": "^1.0.6",
         "typedoc": "^0.28.20",
