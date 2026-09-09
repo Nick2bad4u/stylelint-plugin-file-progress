@@ -69,7 +69,9 @@ The success message follows a zero process exit code. It does not imply that Sty
 
 ## Terminal behavior
 
-Terminal output advances the chosen spinner frame when a file is displayed, then ends the line. No background animation or active timer runs to interfere with Stylelint's report. Redirected output uses plain lines without frames or color.
+In an interactive terminal, each file replaces the previous progress block, including the filename continuation row. Long paths wrap to the terminal width; exceptionally tall blocks are limited to the visible terminal height. Frames advance with file events, with no animation timer. Redirected output uses plain lines without frames, color, or cursor controls.
+
+The renderer checks terminal dimensions and Node stream write counters before clearing its previous rows. A resize or intervening output on either process stream starts a fresh block, preserving formatter reports and messages between API calls. If terminal dimensions or write counters are unavailable, output uses complete lines. The plugin never patches process streams.
 
 The terminal palette matches ESLint File Progress: cyan spinner frames and a bold cyan plugin label; dim status text, separators, and continuation arrows; directory names cycling through blue, cyan, green, magenta, and yellow; and a green filename with its stem emphasized. Summary labels are dim, metric values are yellow, and exit status uses green or red. A blank line separates the process summary from preceding output.
 

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { stripVTControlCharacters } from "node:util";
+import xterm from "@xterm/headless";
 import { format, resolveConfig } from "prettier";
 import { ProgressController } from "../dist/_internal/controller.js";
 import {
@@ -80,6 +80,7 @@ async function sync(file, expected) {
 }
 
 let poster = "";
+let posterSummary = "";
 for (const demo of cases) {
     const settings = normalizeSettings(demo.options);
     const tty = demo.tty !== false;
@@ -115,7 +116,13 @@ for (const demo of cases) {
         onExit: (callback) => {
             onExit = callback;
         },
-        write: (selected, text) => {
+        terminal: () =>
+            tty
+                ? { columns: 94, rows: 22, revision: String(display.length) }
+                : undefined,
+        write: (selected, text, isFinal) => {
+            if (isFinal && demo.name === "recommended-detailed")
+                posterSummary = text;
             assert.equal(selected, stream);
             emit(text);
         },
@@ -124,6 +131,7 @@ for (const demo of cases) {
         milliseconds += 380;
         controller.observe({}, `/demo/${filename}`, settings);
     }
+    if (demo.name === "recommended-detailed") poster = display;
     milliseconds += 700;
     onExit(demo.exitCode ?? 0);
     milliseconds += 400;
@@ -163,7 +171,6 @@ for (const demo of cases) {
             recorded[stem],
             `Demo integrity mismatch: ${stem}`
         );
-    if (demo.name === "recommended-detailed") poster = display;
 }
 assert.equal(Object.keys(manifest).length, 31);
 if (check)
@@ -185,49 +192,84 @@ const escape = (text) =>
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;");
 const palette = {
-    31: "#ff7b72",
-    32: "#7ee787",
-    33: "#e3b341",
-    34: "#79c0ff",
-    35: "#d2a8ff",
-    36: "#a5d6ff",
-    90: "#8b949e",
+    1: "#ff7b72",
+    2: "#7ee787",
+    3: "#e3b341",
+    4: "#79c0ff",
+    5: "#d2a8ff",
+    6: "#a5d6ff",
+    8: "#8b949e",
 };
-const lines = poster
-    .split("\n")
-    .map((line, index) => {
-        let color = "#e6edf3";
-        let bold = false;
-        let dim = false;
-        const spans = line
-            .split(/(\u001b\[[\d;]*m)/u)
-            .map((part) => {
-                if (part.startsWith("\u001b[")) {
-                    for (const code of part
-                        .slice(2, -1)
-                        .split(";")
-                        .map(Number)) {
-                        if (code === 0) {
-                            color = "#e6edf3";
-                            bold = false;
-                            dim = false;
-                        } else if (code === 1) bold = true;
-                        else if (code === 2) dim = true;
-                        else if (code === 22) {
-                            bold = false;
-                            dim = false;
-                        } else if (code === 39) color = "#e6edf3";
-                        else if (palette[code]) color = palette[code];
-                    }
-                    return "";
-                }
-                return `<tspan fill="${color}" font-weight="${bold ? "700" : "400"}" opacity="${dim ? "0.6" : "1"}">${escape(stripVTControlCharacters(part))}</tspan>`;
-            })
-            .join("");
-        return `<text x="26" y="${70 + index * 23}">${spans}</text>`;
-    })
-    .join("");
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="940" height="540" viewBox="0 0 940 540" role="img" aria-label="Colored Stylelint progress with six observed files and a process summary"><rect width="940" height="540" rx="14" fill="#0d1117"/><circle cx="28" cy="25" r="6" fill="#ff7b72"/><circle cx="48" cy="25" r="6" fill="#e3b341"/><circle cx="68" cy="25" r="6" fill="#7ee787"/><g font-family="Consolas,monospace" font-size="16">${lines}</g></svg>\n`;
+async function posterLines(output, startY) {
+    const terminal = new xterm.Terminal({
+        cols: 94,
+        rows: 22,
+        convertEol: true,
+        allowProposedApi: true,
+    });
+    try {
+        await new Promise((resolve) => terminal.write(output, resolve));
+        const buffer = terminal.buffer.active;
+        return Array.from({ length: buffer.length }, (_, index) => {
+            const line = buffer.getLine(index);
+            if (!line || !line.translateToString(true)) return "";
+            const runs = [];
+            for (let column = 0; column < line.length; column += 1) {
+                const cell = line.getCell(column);
+                if (!cell || cell.getWidth() === 0) continue;
+                const color = cell.isFgPalette()
+                    ? (palette[cell.getFgColor()] ?? "#e6edf3")
+                    : "#e6edf3";
+                const bold = cell.isBold() ? "700" : "400";
+                const opacity = cell.isDim() ? "0.6" : "1";
+                const chars = cell.getChars() || " ";
+                const previous = runs.at(-1);
+                if (
+                    previous &&
+                    previous.color === color &&
+                    previous.bold === bold &&
+                    previous.opacity === opacity
+                )
+                    previous.text += chars;
+                else runs.push({ color, bold, opacity, column, text: chars });
+            }
+            // Positioned style runs preserve terminal spacing even after the
+            // repository formatter adds whitespace between SVG elements.
+            return runs
+                .filter((run) => run.text.trim())
+                .map((run) => {
+                    const leading =
+                        run.text.length - run.text.trimStart().length;
+                    return (
+                        '<text x="' +
+                        (26 + (run.column + leading) * 9.6).toFixed(1) +
+                        '" y="' +
+                        (startY + index * 23) +
+                        '" fill="' +
+                        run.color +
+                        '" font-weight="' +
+                        run.bold +
+                        '" opacity="' +
+                        run.opacity +
+                        '">' +
+                        escape(run.text.trim()) +
+                        "</text>"
+                    );
+                })
+                .join("");
+        }).join("");
+    } finally {
+        terminal.dispose();
+    }
+}
+const lines = await posterLines(poster, 70);
+const summaryLines = await posterLines(posterSummary, 330);
+const svg =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="940" height="540" viewBox="0 0 940 540" role="img" aria-label="Two moments from a Stylelint run: live progress and the final process summary"><rect width="940" height="540" rx="14" fill="#0d1117"/><circle cx="28" cy="25" r="6" fill="#ff7b72"/><circle cx="48" cy="25" r="6" fill="#e3b341"/><circle cx="68" cy="25" r="6" fill="#7ee787"/><g font-family="Consolas,monospace" font-size="16">' +
+    lines +
+    '<path d="M26 279H914" stroke="#30363d"/><text x="26" y="308" fill="#8b949e">After process exit</text>' +
+    summaryLines +
+    "</g></svg>\n";
 const posterPath = "docs/docusaurus/static/img/terminal.svg";
 await sync(
     posterPath,

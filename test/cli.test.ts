@@ -6,6 +6,8 @@ import * as path from "node:path";
 import { pathToFileURL } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 
+import { terminalScreen } from "./terminal-helpers.js";
+
 type Environment = Record<string, string | undefined>;
 
 describe("command-line integration", () => {
@@ -213,7 +215,7 @@ describe("command-line integration", () => {
 
     it.each([80, 160])(
         "preserves the colored string formatter byte-for-byte at %s terminal columns",
-        (columns) => {
+        async (columns) => {
             expect.hasAssertions();
 
             const folder = fixture({ detailedSuccess: false }, true, "warning");
@@ -225,7 +227,7 @@ describe("command-line integration", () => {
             writeFileSync(
                 preload,
                 `Object.defineProperties(process.stdout, { isTTY: { value: true }, columns: { value: ${columns}, writable: true } });
-Object.defineProperty(process.stderr, 'isTTY', { value: true });
+Object.defineProperties(process.stderr, { isTTY: { value: true }, columns: { value: ${columns} }, rows: { value: 24 } });
 const stdoutWrite = process.stdout.write, stderrWrite = process.stderr.write;
 process.on('exit', () => {
     if (process.stdout.columns !== ${columns} || process.stdout.write !== stdoutWrite || process.stderr.write !== stderrWrite) throw Error('Terminal state changed');
@@ -244,7 +246,7 @@ process.on('exit', () => {
                         ),
                         "--config",
                         path.join(folder, "config.json"),
-                        "a.css",
+                        "*.css",
                         "--max-warnings",
                         "0",
                         "--color",
@@ -271,6 +273,14 @@ process.on('exit', () => {
             expect(plain.stderr).toContain("\u{1B}[33m");
             expect(plain.stderr).toContain("Max warnings exceeded:");
             expect(withPlugin.stderr).toContain(plain.stderr);
+            expect(withPlugin.stderr).toContain("\u{1B}[1A\u{1B}[2K");
+
+            const screen = await terminalScreen(withPlugin.stderr, columns);
+
+            expect(screen.match(/SFP • linting/gv)).toHaveLength(1);
+            expect(screen).toContain(
+                (await terminalScreen(plain.stderr, columns)).trim()
+            );
             expect(withPlugin.stderr).toContain("\u{1B}[36mSFP");
             expect(
                 withPlugin.stderr.match(/Process exited with status 2\./gv)
