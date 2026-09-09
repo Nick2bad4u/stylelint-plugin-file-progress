@@ -31,7 +31,7 @@ The package uses the same published shared configurations, strict TypeScript app
 
 The runtime remains a native Stylelint rule with no ESLint dependency, CLI wrapper, or public session API. The smaller rule count does not justify importing unrelated rule benchmarks, Electron tooling, or application database commands from a sibling repository. Verification instead concentrates on observational behavior: unchanged CSS, diagnostics, formatter output, fixes, and exit status.
 
-Terminal frames advance when files are observed, with complete lines and no animation timers. This adapts the ESLint presentation to Stylelint's formatter and lifecycle. The documentation describes this behavior directly rather than presenting a timer-driven animation that the plugin does not produce.
+Terminal frames advance when files are observed and replace the previous block in place, including wrapped paths. Terminal dimensions and Node stream write counters prevent the renderer from clearing rows after a resize or intervening formatter output. No animation timers or stream patches are needed. Terminal-emulator tests verify the visible screen as well as the raw CLI report.
 
 ## Release gates
 

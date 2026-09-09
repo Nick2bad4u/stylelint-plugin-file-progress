@@ -25,7 +25,7 @@
 - **Native Stylelint integration.** One observational rule that leaves CSS, fixes, and diagnostics intact.
 - **Output that fits your workflow.** File, compact, and summary modes, with presets for CI and interactive terminals.
 - **Useful process summaries.** Observed file counts, elapsed time, throughput, and exit-code appearance.
-- **Your terminal, your preferences.** Paths, spinner frames, marks, messages, streams, and display thresholds.
+- **Your terminal, your preferences.** Progress updates in place, with colored paths, spinner frames, marks, messages, streams, and display thresholds.
 - **Typed and portable.** ESM and CommonJS exports, TypeScript declarations, and seven configuration subpaths.
 
 ![Colored per-file progress](https://raw.githubusercontent.com/Nick2bad4u/stylelint-plugin-file-progress/main/docs/docusaurus/static/demos/presets/recommended.gif)

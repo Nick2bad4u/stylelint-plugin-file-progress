@@ -3,7 +3,8 @@ import { platform } from "node:os";
 import { performance } from "node:perf_hooks";
 import { isMainThread } from "node:worker_threads";
 import pc from "picocolors";
-import { isFinite } from "ts-extras";
+import { arrayJoin, isFinite, isSafeInteger, stringSplit } from "ts-extras";
+import wrapAnsi from "wrap-ansi";
 
 import type {
     NormalizedProgressSettings,
@@ -20,11 +21,19 @@ export interface ProgressHost {
     readonly isTTY: (stream: OutputStream) => boolean;
     readonly now: () => number;
     readonly onExit: (callback: (code: number) => void) => void;
+    readonly terminal: (stream: OutputStream) => TerminalState | undefined;
     readonly write: (
         stream: OutputStream,
         text: string,
         isFinal: boolean
     ) => void;
+}
+
+/** Cursor ownership changes when terminal geometry or process output changes. */
+export interface TerminalState {
+    readonly columns: number;
+    readonly revision: string;
+    readonly rows: number;
 }
 
 const frames: Record<SpinnerStyle, readonly string[]> = {
@@ -84,6 +93,11 @@ export class ProgressController {
     #count = 0;
     #finished = false;
     readonly #host: ProgressHost;
+    #live: null | {
+        readonly lines: number;
+        readonly stream: OutputStream;
+        readonly terminal: TerminalState;
+    } = null;
     #rendered = -Infinity;
     readonly #seen = new WeakSet<object>();
     #settings: NormalizedProgressSettings | undefined;
@@ -116,7 +130,8 @@ export class ProgressController {
             settings,
             this.#host.color(settings.outputStream)
         );
-        this.#host.write(settings.outputStream, `\n${text}\n`, true);
+        const clear = this.#clear(settings.outputStream);
+        this.#host.write(settings.outputStream, `${clear}\n${text}\n`, true);
     }
 
     /** Record a result once, retaining the last valid settings for shutdown. */
@@ -163,8 +178,25 @@ export class ProgressController {
             settings,
             useColor
         );
-        // File-driven frames leave a complete line: no timer can overwrite Stylelint's formatter.
-        this.#host.write(settings.outputStream, `${frame}${text}\n`, false);
+        const stream = settings.outputStream;
+        const terminal = this.#host.terminal(stream);
+        // Explicit wrapping leaves one spare column, avoiding terminal autowrap
+        // ambiguity for wide characters and a line that exactly fills the row.
+        const lines = terminal
+            ? stringSplit(
+                  wrapAnsi(`${frame}${text}`, terminal.columns - 1, {
+                      hard: true,
+                      trim: false,
+                      wordWrap: false,
+                  }),
+                  "\n"
+              ).slice(0, terminal.rows - 1)
+            : [`${frame}${text}`];
+        const clear = this.#clear(stream);
+        this.#host.write(stream, `${clear}${arrayJoin(lines, "\n")}\n`, false);
+        const after = this.#host.terminal(stream);
+        if (after)
+            this.#live = { lines: lines.length, stream, terminal: after };
     }
 
     #canShow(settings: Readonly<NormalizedProgressSettings>): boolean {
@@ -172,6 +204,24 @@ export class ProgressController {
             this.#count >= settings.minFilesBeforeShow &&
             (!settings.ttyOnly || this.#host.isTTY(settings.outputStream))
         );
+    }
+
+    #clear(stream: OutputStream): string {
+        const live = this.#live;
+        this.#live = null;
+        const terminal = this.#host.terminal(stream);
+        if (
+            !live ||
+            !terminal ||
+            live.stream !== stream ||
+            live.terminal.columns !== terminal.columns ||
+            live.terminal.rows !== terminal.rows ||
+            live.terminal.revision !== terminal.revision
+        )
+            return "";
+        // Each render ends on a fresh line. Erase only the rows we still own;
+        // formatter writes on either process stream relinquish that ownership.
+        return `\r${"\u{1B}[1A\u{1B}[2K".repeat(live.lines)}`;
     }
 }
 
@@ -216,6 +266,27 @@ export const processHost: ProgressHost = {
     now: () => performance.now(),
     onExit: (callback) => {
         process.once("exit", callback);
+    },
+    terminal: (stream) => {
+        const output = process[stream];
+        const { bytesWritten, columns, rows } = output;
+        if (
+            !isMainThread ||
+            !output.isTTY ||
+            !isSafeInteger(columns) ||
+            columns < 4 ||
+            !isSafeInteger(rows) ||
+            rows < 2 ||
+            !isFinite(bytesWritten)
+        )
+            return undefined;
+        return {
+            columns,
+            // Reading counters observes normal Node stream writes without
+            // intercepting them. Either stream can share the same terminal.
+            revision: `${process.stdout.bytesWritten}:${process.stderr.bytesWritten}`,
+            rows,
+        };
     },
     write: (stream, text) => {
         // Progress must not crash linting when a downstream pipe closes.

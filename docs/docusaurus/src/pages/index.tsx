@@ -143,7 +143,7 @@ export default function Home(): JSX.Element {
                                     </div>
                                 </div>
                                 <img
-                                    alt="Terminal preview showing observed stylesheet paths and a detailed process summary"
+                                    alt="Two moments from a Stylelint run: live progress and the final process summary"
                                     className="sfp-terminal-poster"
                                     height="540"
                                     src={terminal}
@@ -298,7 +298,7 @@ export default function Home(): JSX.Element {
                                 />
                             </details>
                             <img
-                                alt="Still preview of Stylelint file progress and its process summary"
+                                alt="Live Stylelint progress and the later process summary"
                                 className="sfp-demo-still"
                                 height="540"
                                 loading="lazy"

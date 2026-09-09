@@ -29,6 +29,7 @@ function harness(isTTY = false, useColor = false) {
         isTTY: () => isTTY,
         now: () => now,
         onExit,
+        terminal: () => undefined,
         write,
     };
     return {
