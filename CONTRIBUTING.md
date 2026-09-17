@@ -10,6 +10,22 @@ Run `npm run lint:all` for shared-config checks. Use `npm run lint:fix` and `npm
 
 Run `npm run sync:rules:write` and `npm run docs:demos:write` when changing options or presets. These commands build current source first; GIF regeneration requires [agg 1.9.0](https://github.com/asciinema/agg/releases/tag/v1.9.0). Their check counterparts compare output without modifying tracked files. Run `npm run docs:build` to compile the Docusaurus site and both config inspectors. Every public API reflection must have TSDoc; the documentation build enforces 100% coverage.
 
+## Documentation layout
+
+The landing page lives in `docs/docusaurus/src/pages/index.tsx`; shared styles and the colored sidebar palette live in `src/css/custom.css` within that workspace. `sidebars.ts` groups the guides, display reference, presets, development docs, and ecosystem links. Keep the existing `/activate`, `/presets`, `/demos`, and preset subpaths stable when reorganizing navigation.
+
+Edit README prose directly. `npm run sync:rules:write` updates only its marked badge and preset sections. The same command generates `docs/docusaurus/src/data/project.json`, the preset pages, and the demo gallery from public exports and `scripts/docs-catalog.mjs`. Do not hand-edit that JSON or generated pages. Edit the canonical rule reference in `docs/rules/activate.md` before syncing its site copy.
+
+Local search indexes the production build, including guides and API docs. Validate it with `npm run docs:build`, then `npm run docs:serve`. Check the homepage, search results, sidebar navigation, and both inspectors at the `/stylelint-plugin-file-progress/` base path in light and dark mode and at a mobile width. The homepage uses a static terminal poster until the reader opens its animated recording.
+
+The public API reference is generated under `site-docs/developer/api`; its edit link is hidden because changes belong in source TSDoc. Rebuild it with `npm run docs:api`.
+
+## Toolchain maintenance
+
+`npm run sync:node-version-files` synchronizes `.node-version` and `.nvmrc` with the running Node version; pass `--version` to the script directly for an explicit version. Pins must satisfy both the public Node range and the development runtime range. Its `:check` counterpart validates the stored pins without writing. `npm run sync:npm-version` synchronizes the root and workspace npm pins and development-engine versions from the root `packageManager`; its `:check` counterpart does not write.
+
+`npm run update-deps` prepares dependency updates with the shared updater, synchronizes toolchain metadata, and resolves a new lockfile without changing installed packages or running dependency scripts. It preserves the separately managed npm version. Review the manifest and lockfile changes, resolve peer incompatibilities, and update the version-qualified `allowScripts` entries for reviewed lifecycle dependencies before running `npm ci` and `npm run release:verify`. Keep explicit denials intact. The published `vitest-config-nick2bad4u@1.0.0` supports Vitest 4, so upgrade the shared configuration before adopting Vitest 5. `npm run update-actions` retains SHA-style action references; review and verify the resulting commits before pushing.
+
 ## Validation
 
 `npm run release:verify` runs the full local gate, including packed consumers on every supported Stylelint boundary. It does not publish. CI also exercises Linux, Windows, and macOS; minimum Node consumers are tested separately from the development install.

@@ -31,7 +31,7 @@ The package uses the same published shared configurations, strict TypeScript app
 
 The runtime remains a native Stylelint rule with no ESLint dependency, CLI wrapper, or public session API. The smaller rule count does not justify importing unrelated rule benchmarks, Electron tooling, or application database commands from a sibling repository. Verification instead concentrates on observational behavior: unchanged CSS, diagnostics, formatter output, fixes, and exit status.
 
-Terminal frames advance when files are observed, with complete lines and no animation timers. This adapts the ESLint presentation to Stylelint's formatter and lifecycle. The documentation describes this behavior directly rather than presenting a timer-driven animation that the plugin does not produce.
+Terminal frames advance when files are observed and replace the previous block in place, including wrapped paths. Terminal dimensions and Node stream write counters prevent the renderer from clearing rows after a resize or intervening formatter output. No animation timers or stream patches are needed. Terminal-emulator tests verify the visible screen as well as the raw CLI report.
 
 ## Release gates
 
@@ -47,7 +47,9 @@ The tarball publish command uses an explicit `./` prefix, as npm 12 otherwise in
 
 ## Maintenance boundaries
 
-Stylelint Config Inspector 2.3.5 restores three root-relative icon URLs during hydration even when built with `--base`. A scoped post-build correction fixes only those icon link values in its generated JavaScript. Documentation checks reject the broken URLs and require the icon files. Remove this correction when the inspector fixes its static build.
+Stylelint Config Inspector 2.3.7 provides an embedded startup favicon and resolves its active icon links from the runtime deployment base. Upstream browser regressions cover startup with JavaScript disabled and root and nested deployments after navigation. This repository uses that release directly; the temporary JavaScript post-processing correction has been removed. Documentation checks still reject root-relative icon links and require the icon files.
+
+The 1.0.1 Windows console correction routes terminal output through Node's console-aware streams. A native code-page-437 reproduction showed corrupted spinner marks and filenames with descriptor writes; the corrected transport preserves Unicode and ANSI output without changing console settings. Regression tests cover both output streams, shutdown output, listener cleanup, and byte-for-byte parity with Stylelint's colored formatter at 80 and 160 columns. The runtime suite now has 63 tests, with 100% statement, line, and function coverage and 95.41% branch coverage.
 
 The documentation parser override is a maintained fork, not an upstream `image-size` release. Its source delta, exact version, license, API compatibility, and integrity are documented in [contributing](./contributing.md). Reassess it when Docusaurus adopts a patched parser; it is not shipped as a plugin runtime dependency.
 

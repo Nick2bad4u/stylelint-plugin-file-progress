@@ -3,6 +3,89 @@
 
 # 📜 Changelog
 
+## ✨ What's Changed in v1.0.3
+
+- <b>Commit Range: ➡️</b> [`v1.0.2...v1.0.3`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/compare/v1.0.2...v1.0.3 "View full commit range on GitHub")
+
+### 🛠️ Bug Fixes
+
+- [`cca33f4`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/cca33f40b06040b17a7d46211a3be667ad0f9587 "Diff: 66 files, +845 | -556") — 🐛 [fix] Replace live terminal progress in place&nbsp;<sub><em>(66&nbsp;files,&nbsp;+845,&nbsp;-556)</em></sub>
+  - 🐛 [fix] Reuse the active spinner block and wrapped path rows while preserving intervening formatter output through terminal geometry and stream write counters.
+  - 🧪 [test] Verify visible terminal screens, narrow and wide paths, both streams, terminal resizing, viewport limits, and real Stylelint diagnostics without timers or stream patches.
+  - 📝 [docs] Regenerate all progress recordings and render the static preview from terminal snapshots, with updated output behavior guidance.
+  - 👷 [build] Prepare plugin 1.0.3 with ANSI-aware wrapping and keep Vitest on 4.x.
+
+### 🔧 Build System
+
+- [`16bde97`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/16bde977414a29bdbf81aea03761693c69e86b11 "Diff: 1 file, +109 | -0") — 👷 [build] Retain license notices for bundled terminal helpers&nbsp;<sub><em>(1&nbsp;file,&nbsp;+109,&nbsp;-0)</em></sub>
+
+- [`d4ab600`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/d4ab600b592be799b5532a118ed477364dd7228d "Diff: 2 files, +9 | -9") — 👷 [build] Adopt matching shared Stylelint progress settings&nbsp;<sub><em>(2&nbsp;files,&nbsp;+9,&nbsp;-9)</em></sub>
+  - 👷 [build] Use shared config 3.0.1 and progress plugin 1.0.2 for the repository lint command, including multiline paths and the matching completion message.
+  - 🧪 [test] Validate the complete release gate and clean published consumers while retaining Vitest and coverage 4.1.11.
+
+> [!NOTE]
+> **Release comparison**: https://github.com/Nick2bad4u/stylelint-plugin-file-progress/compare/v1.0.2...v1.0.3
+
+## ✨ What's Changed in v1.0.2
+
+- <b>Commit Range: ➡️</b> [`v1.0.1...v1.0.2`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/compare/v1.0.1...v1.0.2 "View full commit range on GitHub")
+
+### 🛠️ Bug Fixes
+
+- [`cc63be1`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/cc63be14322938c4e9ecb52b205baf33060c0d12 "Diff: 70 files, +773 | -302") — 🐛 [fix] Match ESLint progress colors and terminal formatting&nbsp;<sub><em>(70&nbsp;files,&nbsp;+773,&nbsp;-302)</em></sub>
+  - 🐛 [fix] Match ESLint progress colors and terminal formatting
+  - 🐛 [fix] Dim the activity text, marks, continuation arrows, and path separators; cycle bold directory colors and distinguish green filename stems from extensions.
+    🐛 [fix] Color all spinner frames cyan and align summary marks, emphasis, spacing, duration units, labels, and metric colors while preserving observed-file and process-exit semantics.
+    🧪 [test] Cover ANSI output, directory palette cycling, exact Windows and POSIX path text, terminal-control escaping, summaries, and all five spinner styles.
+    📝 [docs] Regenerate terminal recordings and GIFs, render ANSI weight and dimming in the static poster, and explain presentation parity and Stylelint lifecycle boundaries.
+    👷 [build] Retain native RegExp splitting for path separators because the shared ts-extras stringSplit helper accepts only string separators.
+  - 🧹 [chore] Prepare the 1.0.2 progress presentation release
+  - 🐛 [fix] Synchronize exported metadata with version 1.0.2
+  - 🐛 [fix] Round fractional milliseconds in short summaries
+  - 📝 [docs] Record the complete 1.0.2 release history
+
+### 📝 Documentation
+
+- [`ca9266d`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/ca9266dd5d96a641873cf323717f17fa3188363e "Diff: 36 files, +3734 | -129") — 📝 [docs] Polish the site, README, and maintenance tooling (#13)&nbsp;<sub><em>(36&nbsp;files,&nbsp;+3734,&nbsp;-129)</em></sub>
+  - 📝 [docs] Add a branded landing page, shared badges and preset metadata, colored sidebar groups, local search, linked guides, terminal demos, and a refreshed README.
+  - 🐛 [fix] Improve light and dark contrast, make embedded inspector navigation consistent, validate the generated API route, and generate API docs before local startup.
+  - 🧹 [chore] Integrate compatible maintenance dependencies and verified action pins, preserve the full lint gate, validate Node development ranges, synchronize npm workspace pins, and prepare dependency updates without running unreviewed lifecycle scripts.
+  - 🧪 [test] Validate 63 tests, 31 demos, complete public API documentation, packed Stylelint 16/17 consumers, exact Node 22.0.0 compatibility, 16 toolchain CLI scenarios, a lifecycle update fixture, and light/dark browser accessibility checks.
+
+> [!NOTE]
+> **Release comparison**: https://github.com/Nick2bad4u/stylelint-plugin-file-progress/compare/v1.0.1...v1.0.2
+
+## ✨ What's Changed in v1.0.1
+
+- <b>Commit Range: ➡️</b> [`v1.0.0...v1.0.1`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/compare/v1.0.0...v1.0.1 "View full commit range on GitHub")
+
+### 🛠️ Bug Fixes
+
+- [`e141651`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/e1416513611d9e214097c6a28fdc0501dd944ddd "Diff: 9 files, +194 | -18") — 🐛 [fix] Preserve Unicode and colors in Windows terminals (#12)&nbsp;<sub><em>(9&nbsp;files,&nbsp;+194,&nbsp;-18)</em></sub>
+  - 🐛 [fix] Preserve Unicode and colors in Windows terminals
+  - 🐛 [fix] Use Node console-aware streams for Windows TTY progress and shutdown summaries while retaining safe descriptor writes for redirected main-thread output.
+  - 🧪 [test] Cover both Windows output streams and unchanged colored Stylelint diagnostics at narrow and wide terminal widths.
+  - 📝 [docs] Document the console behavior and prepare the compatible 1.0.1 patch.
+  - 📝 [docs] Record the complete 1.0.1 release history
+
+### 🧹 Chores
+
+- [`9edb490`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/9edb4900fde609e03e08af88639aab5b71472f23 "Diff: 8 files, +470 | -314") — 🧹 [chore] Align shared tooling and adopt the upstream inspector fix (#11)&nbsp;<sub><em>(8&nbsp;files,&nbsp;+470,&nbsp;-314)</em></sub>
+  - 🧹 [chore] Align repository tooling with shared validation configs
+  - 👷 [build] Use the published Vitest and strict dual-module ATTW configs with compatible dependencies, preserve runtime coverage thresholds, and provide working lint, package, and explicit fix commands.
+  - 🧹 [chore] Group dependency updates, scope actionlint and Node diagnostics to this repository, and retain a dependency-specific lifecycle allowlist without copied scanning exclusions.
+  - 🐛 [fix] Activate build diagnostics and validate fresh package builds
+  - 👷 [build] Load the repository Node configuration explicitly during development builds and build exports before standalone package-content checks.
+  - 👷 [build] Adopt the upstream inspector base-path fix
+  - 👷 [build] Update Stylelint Config Inspector to 2.3.6 and remove the temporary compiled-JavaScript asset correction and post-build hook.
+  - 📝 [docs] Record the upstream runtime-base fix while retaining documentation checks for valid icon paths and files.
+  - 👷 [build] Adopt the released Stylelint tooling integrations
+  - 👷 [build] Use Inspector 2.3.7 with its startup and runtime icon fixes, and shared Stylelint config 3.0.0 so the repository enables progress through the shared preset.
+  - 📝 [docs] Record the completed upstream browser fix without changing the progress plugin runtime or package version.
+
+> [!NOTE]
+> **Release comparison**: https://github.com/Nick2bad4u/stylelint-plugin-file-progress/compare/v1.0.0...v1.0.1
+
 ## ✨ What's Changed in v1.0.0
 
 - <b>Commit Range: ➡️</b> [`175024c...v1.0.0`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/compare/175024cfff005672b09765769f41384681985edb...v1.0.0 "View full commit range on GitHub")
@@ -47,6 +130,10 @@
 - [`7219cb4`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/7219cb46452644b06820c450ee1acc261b27ee51 "Diff: 3 files, +55 | -11") — 🐛 [fix] Bootstrap npm before cache restoration in Actions&nbsp;<sub><em>(3&nbsp;files,&nbsp;+55,&nbsp;-11)</em></sub>
 
 ### 📝 Documentation
+
+- [`aac0090`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/aac0090d872839fbcd4f2f33515b347da28b7924 "Diff: 1 file, +4 | -4") — 📝 [docs] Preserve verified contributor links and nested release entries&nbsp;<sub><em>(1&nbsp;file,&nbsp;+4,&nbsp;-4)</em></sub>
+
+- [`3899bd5`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/3899bd57248d3b017255b105ecdb8ecba85cda53 "Diff: 1 file, +12 | -4") — 📝 [docs] Record the portable tarball gate in the complete release history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+12,&nbsp;-4)</em></sub>
 
 - [`5d78fe9`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/5d78fe9f317a7f6ffc7d2aba7fdcda2018f35d0f "Diff: 1 file, +2 | -2") — 📝 [docs] Correct first-contribution links in the release history&nbsp;<sub><em>(1&nbsp;file,&nbsp;+2,&nbsp;-2)</em></sub>
 
@@ -103,15 +190,15 @@
 
 - [`4f92add`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/4f92addb15d9064016bfc2fad5040179bd9b1692 "Diff: 4 files, +14 | -14") — 👷 [ci] Integrate validated action updates into the release fix&nbsp;<sub><em>(4&nbsp;files,&nbsp;+14,&nbsp;-14)</em></sub>
   - origin/main:
-    - ⬆️ [build] Update step-security/harden-runner
-    - ⬆️ [build] Update actions/checkout
+    ⬆️ [build] Update step-security/harden-runner
+    ⬆️ [build] Update actions/checkout
 
 - [`71e68fe`](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/commit/71e68fe7943d8518643e7cead3ae49d7a21ad3b9 "Diff: 4 files, +7 | -7") — ⬆️ [build] Update step-security/harden-runner&nbsp;<sub><em>(4&nbsp;files,&nbsp;+7,&nbsp;-7)</em></sub>
 
 ### New Contributors
 
-- @dependabot[bot] made their first contribution in [#2](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/2)
-- @Nick2bad4u made their first contribution in [#1](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/1)
+- @Nick2bad4u made their first contribution in [#10](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/10)
+- @dependabot[bot] made their first contribution in [#8](https://github.com/Nick2bad4u/stylelint-plugin-file-progress/pull/8)
 
 ## ⭐ Contributors
 
