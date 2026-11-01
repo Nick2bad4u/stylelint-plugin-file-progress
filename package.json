@@ -231,8 +231,8 @@
         "@docusaurus/mdx-loader": {
             "image-size": "npm:image-size-next@2.1.1"
         },
-        "qs": "^6.16.0",
-        "serialize-javascript": "^7.1.2",
+        "qs": "^6.17.1",
+        "serialize-javascript": "^7.1.4",
         "sockjs": {
             "uuid": "^11.1.1"
         }
